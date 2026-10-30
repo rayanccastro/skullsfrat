@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="Skulls Fraternity. Uma família para quem nunca se encaixou. Conheça nossa história, atravesse o labirinto dos sete pecados e encontre seu lugar nas sombras.">
+  <title>Skulls Fraternity | Entre o sagrado e o profano</title>
+  <link rel="icon" href="/assets/crest.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700&family=New+Rocker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=7980f4328abe">
+  <link rel="stylesheet" href="/game.css?v=7980f4328abe">
+  <link rel="stylesheet" href="/audio.css?v=7980f4328abe">
+  <link rel="stylesheet" href="/atmosphere.css?v=7980f4328abe">
+  <link rel="stylesheet" href="/entrance.css?v=7980f4328abe">
+  <link rel="stylesheet" href="/background-video.css?v=7980f4328abe">
+  <script type="module" src="/app.js?v=7980f4328abe"></script>
+</head>
+<body>
+  <div id="site-video" class="site-video" aria-hidden="true" data-video-state="waiting"><div class="site-video__screen"></div></div>
+  <dialog id="skulls-gate" class="entry-gate" open aria-labelledby="entry-title" aria-describedby="entry-description">
+    <div class="entry-curtain entry-curtain--left" aria-hidden="true"></div><div class="entry-curtain entry-curtain--right" aria-hidden="true"></div>
+    <form method="dialog" class="entry-content">
+      <p class="entry-eyebrow">SKULLS FRATERNITY</p>
+      <div class="entry-copy"><h2 id="entry-title">Toda entrada<br>tem um <em>preço.</em></h2></div>
+      <button class="entry-seal" type="submit" value="enter" aria-label="Quebrar o selo e entrar nos Skulls">
+        <img class="seal-intact" src="/assets/crest-embroidered.png" alt="Selo dos Skulls: caveira e serpente vermelha" width="1024" height="1024" fetchpriority="high">
+        <span class="seal-fragments" aria-hidden="true"></span>
+        <svg class="seal-fissure" viewBox="0 0 100 100" aria-hidden="true"><path d="M47 0L44 19 53 30 50 48 71 38 76 27 100 17M50 48L67 57 80 53 100 60M50 48L70 78 79 100M50 48L43 65 47 81 40 100M50 48L29 56 24 72 0 83M50 48L33 39 23 43 0 38M50 48L0 0"/></svg>
+      </button>
+      <p class="entry-caption" id="entry-description"><strong>Clique no selo para atravessar</strong><span>A trilha sonora começa ao entrar. Você pode pausar quando quiser.</span></p>
+      <span class="entry-announcement" role="status" aria-live="polite"></span>
+    </form>
+  </dialog>
+  <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Skulls, início"><img src="/assets/wordmark.png" alt="Skulls" width="1080" height="1080"></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="navigation">Menu <span aria-hidden="true">☰</span></button>
+    <nav id="navigation" aria-label="Navegação principal">
+      <a href="#irmandade">A irmandade</a><a href="#historia">Nossa história</a><a href="#labirinto">O labirinto</a>
+      <a href="#recrutamento" class="nav-join">Solicitar recrutamento <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main id="conteudo">
+    <section id="inicio" class="hero shell">
+      <div class="hero-text">
+        <p class="eyebrow"><span class="small-rule"></span> SKULLS FRATERNITY</p>
+        <h1>Estranho para o mundo.<br><em>Família para nós.</em></h1>
+        <p class="hero-description">Para quem abraça o próprio caos e encontra, nas sombras, um lugar para pertencer.</p>
+        <a class="button button-red" href="#labirinto">Entre no labirinto <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-art"><div class="hero-relief"><div class="art-halo" aria-hidden="true"></div><img src="/assets/crest-embroidered.png" alt="Emblema bordado dos Skulls: caveira envolvida por uma serpente vermelha, com um pentagrama ao fundo" width="1024" height="1024" fetchpriority="high"></div></div>
+    </section>
+    <div class="creed-band" aria-label="Lema da fraternidade"><span>VIVEMOS NAS SOMBRAS</span><span aria-hidden="true">✶</span><span>PECAR É VIVER</span><span aria-hidden="true">✶</span><span>PERTENCER É RESISTIR</span></div>
+    <section id="irmandade" class="manifesto shell section-space">
+      <div class="manifesto-title"><span class="section-kicker">A IRMANDADE</span><h2>Não pedimos licença<br>para <em>ser quem somos.</em></h2></div>
+      <div class="manifesto-copy"><p>Nas sombras da cidade e do campus, uma irmandade nasceu da revolta. O metal nos uniu. O desconforto de nunca se encaixar nos fez família.</p><p>Aqui, cada um carrega sua história, suas culpas e seus próprios demônios. Abraçamos o caos e transformamos dor em força. Quando te puxam para dentro, você vira um dos nossos.</p><a class="text-link" href="#historia">Conheça o que nos trouxe até aqui <span aria-hidden="true">↘</span></a></div>
+      <div class="symbol-notes"><p><b>A CAVEIRA</b><span>O que todos somos por baixo da pele.</span></p><p><b>A SERPENTE</b><span>Os instintos que o mundo manda esconder.</span></p><p><b>O VÍNCULO</b><span>Entre o barulho e o silêncio, um lugar para chamar de casa.</span></p></div>
+    </section>
+    <section id="historia" class="history section-space">
+      <div class="shell"><div class="section-heading"><span class="section-kicker">OS REGISTROS DA IRMANDADE</span><h2>Toda sombra<br>tem uma <em>origem.</em></h2><p>Quatro atos. Uma revolta. E um esquecimento que teve seu preço.</p></div><div id="acts" class="acts"></div></div>
+    </section>
+    <section id="labirinto" class="labyrinth shell section-space">
+      <div class="section-heading"><span class="section-kicker">O LABIRINTO DOS SETE PECADOS</span><h2>Siga o instinto.<br><em>Encontre a saída.</em></h2><p>Guie a serpente pelas sombras. A cada saída, uma pista sobre um dos sete pecados se revela.</p></div>
+      <div id="game-root"></div>
+      <p class="game-footnote">As pistas são enigmas criados para este jogo, inspirados no universo Skulls.</p>
+    </section>
+    <section class="invocation" aria-label="A Ceifadora"><img src="/assets/crest-pattern.png" alt="" width="1080" height="1080" loading="lazy"><div class="shell invocation-content"><span class="section-kicker">O ÚLTIMO CICLO</span><blockquote>“Tudo o que a Deusa dá,<br><em>ela também tira.</em>”</blockquote><p>As víboras foram tomadas. A memória permanece.</p><a href="#historia" class="text-link" id="read-fourth-act">Leia o retorno da Ceifadora <span aria-hidden="true">↗</span></a></div></section>
+    <section id="recrutamento" class="recruitment shell section-space">
+      <div class="recruit-intro"><span class="section-kicker">RECRUTAMENTO</span><h2>Talvez o seu lugar<br>seja <em>entre nós.</em></h2><p>Não adianta forçar. Reconhecemos quem é real. Conte sua história e dê o primeiro passo até a irmandade.</p><img src="/assets/crest.png" alt="Caveira e serpente, emblema dos Skulls" width="1080" height="1080" loading="lazy"><p class="recruit-note">Uma solicitação é o início de uma conversa.<br>A entrada na irmandade depende de avaliação.</p></div>
+      <div id="recruitment-root" class="recruitment-form"></div>
+    </section>
+  </main>
+  <footer class="site-footer shell"><a href="#inicio" class="footer-brand">SKULLS<span>FRATERNITY</span></a><p>Entre o sagrado e o profano.<br>Entre o barulho e o silêncio.</p><a href="#recrutamento">Solicitar recrutamento <span aria-hidden="true">↗</span></a><span class="footer-note">Universo de roleplay · Skulls</span></footer>
+</body>
+</html>
