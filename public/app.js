@@ -1,12 +1,12 @@
-import { acts, ceifadoraPrologue } from './lore.js?v=grimorio1104';
-import { mountGrimoire } from './grimorio.js?v=grimorio1104';
-import { mountGame } from './game.js?v=grimorio1104';
-import { mountLuciferGame } from './lucifer-game.js?v=grimorio1104';
-import { mountRecruitment } from './recruitment.js?v=grimorio1104';
-import { mountAudio } from './audio.js?v=grimorio1104';
-import { mountAtmosphere } from './atmosphere.js?v=grimorio1104';
-import { mountEntrance } from './entrance.js?v=grimorio1104';
-import { mountBackgroundVideo } from './background-video.js?v=grimorio1104';
+import { acts, ceifadoraPrologue } from './lore.js?v=c876f8bd5dbe';
+import { mountGrimoire } from './grimorio.js?v=c876f8bd5dbe';
+import { mountGame } from './game.js?v=c876f8bd5dbe';
+import { mountLuciferGame } from './lucifer-game.js?v=c876f8bd5dbe';
+import { mountRecruitment } from './recruitment.js?v=c876f8bd5dbe';
+import { mountAudio } from './audio.js?v=c876f8bd5dbe';
+import { mountAtmosphere } from './atmosphere.js?v=c876f8bd5dbe';
+import { mountEntrance } from './entrance.js?v=c876f8bd5dbe';
+import { mountBackgroundVideo } from './background-video.js?v=c876f8bd5dbe';
 
 
 

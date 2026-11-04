@@ -4,27 +4,17 @@
 #historia.history:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 52%,#7e070b26,transparent 57%),linear-gradient(#05030315,#070303b0)}
 #historia .section-heading{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important}
 #historia .g-library{position:relative;border:0;display:block;min-height:690px;padding:0;margin:-22px auto -33px;max-width:1170px}
+.g-outline-defs{position:absolute;pointer-events:none}
 .g-altar{min-height:690px;display:flex;align-items:center;flex-direction:column;justify-content:flex-start;text-align:center;position:relative;padding:15px 15px 70px}
 .g-altar:before{content:"";pointer-events:none;position:absolute;width:min(540px,78vw);height:420px;top:15px;border-radius:50%;border:1px solid #661f223f;box-shadow:0 0 0 29px #61101407,0 0 0 53px #b0151b06;filter:drop-shadow(0 0 42px #9c10102a)}
 .g-altar:after{content:"";position:absolute;z-index:0;left:-15%;right:-15%;bottom:35px;height:90px;background:linear-gradient(180deg,transparent,#3d090b36,#0b0303a8);pointer-events:none}
 .g-glyph{position:relative;z-index:2;color:#b02925;font:500 19px Georgia,serif;letter-spacing:.6em;text-shadow:0 0 17px #c01e24;margin-top:0;margin-bottom:6px}
 .g-display{position:relative;width:min(660px,85vw);height:375px;display:grid;place-items:center;margin:0 auto 3px;isolation:isolate}
 .g-display:after{content:"";position:absolute;z-index:-1;bottom:13px;left:0;right:0;height:48px;background:radial-gradient(ellipse,#b4232221,transparent 71%);filter:blur(17px)}
-.g-book-launch{all:unset;display:block;position:relative;z-index:2;width:265px;height:325px;cursor:pointer;transform:perspective(850px) rotateY(-8deg) rotate(-2deg);filter:drop-shadow(10px 25px 15px #000);transition:transform .55s cubic-bezier(.17,.85,.3,1),filter .55s}
+.g-book-launch{all:unset;display:block;position:relative;z-index:2;width:235px;height:325px;cursor:pointer;transform:perspective(850px) rotateY(-8deg) rotate(-2deg);filter:drop-shadow(10px 25px 15px #000);transition:transform .55s cubic-bezier(.17,.85,.3,1),filter .55s}
 .g-book-launch:focus-visible{outline:2px solid #e27d63;outline-offset:9px}
 .g-book-launch:hover{transform:perspective(800px) translateY(-15px) scale(1.07) rotateY(-2deg) rotate(-1deg);filter:drop-shadow(10px 32px 22px #000)}
 .g-book-launch:active{transform:scale(.96)}
-.g-cover-pages{position:absolute;inset:9px -11px -7px 12px;border:3px solid #442c26;border-radius:8px 12px 12px 4px;background:repeating-linear-gradient(0deg,#49342c,#b08d69 2px,#261814 4px,#6b5140 5px);box-shadow:10px 12px 15px #000;transform:translateX(10px)}
-.g-cover-book{position:absolute;inset:0;border-radius:5px 12px 12px 5px;border:7px solid #0a090b;overflow:hidden;background:#140b0e;box-shadow:inset 0 0 0 2px #9a4a3f,inset 0 0 0 8px #0a0608,inset 0 0 0 10px #662e2b,0 0 22px #a018165e}
-.g-cover-book:before{content:"";position:absolute;inset:8px;border:2px ridge #99645599;z-index:3;pointer-events:none}
-.g-cover-book:after{content:"";position:absolute;left:2%;right:2%;top:9%;bottom:8%;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,#09050871 94%)}
-.g-cover-art{display:block;width:100%;height:100%;background:url('/assets/grimorio-capa-relevo.webp') center/100% 100% no-repeat;filter:contrast(1.15) saturate(.84)}
-.g-cover-gem{position:absolute;z-index:4;bottom:5%;left:50%;transform:translateX(-50%);font:29px Georgia,serif;color:#e73028;text-shadow:0 0 9px #f60000,0 0 18px #f33131,0 1px #000}
-.g-hero-scythe{position:absolute;z-index:3;width:280px;height:365px;left:calc(50% + 67px);top:-3px;pointer-events:none;transform:rotate(-21deg)}
-.g-hero-scythe img{width:100%;height:100%;object-fit:contain}
-.g-live-flame img{animation:g-flame-breathe 1.15s ease-in-out infinite alternate;filter:drop-shadow(0 0 6px #fa3000a3) drop-shadow(0 0 15px #ef200095)}
-.g-live-flame:before{content:"";position:absolute;z-index:-1;width:68%;height:26%;left:9%;top:9%;border-radius:50%;background:radial-gradient(ellipse,#fd190056,#f0500a27 50%,transparent 72%);filter:blur(12px);transform-origin:center;animation:g-flare 1.45s ease-in-out infinite alternate}
-.g-live-flame:after{content:"✦  ✧  ✦  ✧  ✦";position:absolute;top:10%;left:0;white-space:nowrap;color:#ff852b;text-shadow:0 0 8px #f40,0 0 14px #f21;letter-spacing:1.6em;font-size:9px;opacity:0;pointer-events:none;animation:g-embers 1.9s linear infinite}
 .g-altar-title{font:500 clamp(32px,3.7vw,48px)/1.1 'Cormorant Garamond',Georgia,serif;color:#e2c5b3;margin:3px 0 8px;text-shadow:0 1px 1px #000,0 7px 18px #000}
 .g-altar-description{font:500 clamp(16px,1.45vw,19px)/1.4 'Cormorant Garamond',Georgia,serif;color:#bda69c;margin:2px 0 22px;max-width:590px}
 .g-open-button{position:relative;z-index:4;min-width:290px;min-height:47px;border:1px solid #ba4740;background:linear-gradient(90deg,#1a060a,#3c0b0c,#1a060a);box-shadow:inset 0 0 0 2px #080507,inset 0 0 0 3px #a7372c,0 0 20px #9f1b1b3d;color:#f4dacc;font:500 15px 'Cormorant Garamond',Georgia,serif;letter-spacing:.14em;cursor:pointer;transition:background .25s,transform .2s}
@@ -33,6 +23,7 @@
 .g-altar-footnote{font:700 9px var(--body,Arial,sans-serif);letter-spacing:.22em;color:#956f64;margin:18px 0 0}
 .g-dialog{position:fixed;inset:0;z-index:100;padding:0;margin:auto;width:100vw;height:100dvh;max-width:none;max-height:none;border:0;background:#060405 url('/assets/grimorio-cenario.webp') center/cover no-repeat;color:#eee3da;overflow:hidden}
 .g-dialog:not([open]){display:none}
+html:has(.g-dialog[open]){overflow:hidden}
 .g-dialog::backdrop{background:#000e}
 .g-dialog:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,#8b0a0a29,transparent 61%),linear-gradient(#0004,#0008)}
 .g-modal-wrap{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;padding:10px 20px 12px}
@@ -44,11 +35,12 @@
 .g-toolbar-links{display:flex;align-items:center;gap:19px;color:#ce7b70;font:700 10px var(--body,Arial,sans-serif);letter-spacing:.2em}
 .g-close{width:39px;height:39px;border:1px solid #9f4841;border-radius:50%;background:#180708;color:#f2b5a4;font-size:18px;cursor:pointer;transition:transform .3s,background .25s}
 .g-close:hover{background:#7c191a;transform:rotate(90deg)}
-.g-stage{position:relative;z-index:2;flex:0 0 auto;width:min(1242px,96vw,calc((100dvh - 154px)*2.31));aspect-ratio:1242/537;perspective:1800px;transform-style:preserve-3d;filter:drop-shadow(0 18px 22px #000e)}
-.g-stage .g-spread{position:absolute;inset:0;opacity:0;background:url('/assets/grimorio-aberto-paginas.webp') center / 100% 100% no-repeat;transform-style:preserve-3d;isolation:isolate}
-.g-stage .g-spread.g-first-spread{background-image:url('/assets/grimorio-aberto-primeira.webp')}
+.g-stage{--turn-time:820ms;--mobile-illustration:url('/assets/grimorio-folha-ilustrada.webp');position:relative;z-index:2;flex:0 0 auto;width:min(1242px,96vw,calc((100dvh - 154px)*2.31));aspect-ratio:1242/537;perspective:1800px;transform-style:preserve-3d}
+.g-stage .g-spread{position:absolute;inset:0;opacity:0;perspective:1800px;transform-style:preserve-3d;touch-action:pan-y}
+/* The canvas stays rectangular for 3D transforms. The painted book follows its own edge. */
+.g-spread::before{content:"";position:absolute;inset:0;pointer-events:none;clip-path:url(#g-open-outline);background:url('/assets/grimorio-aberto-paginas.webp') center / 100% 100% no-repeat}
+.g-spread.g-first-spread::before{background-image:url('/assets/grimorio-aberto-primeira.webp')}
 .g-stage.g-is-open .g-spread{opacity:1}
-.g-stage.g-opening .g-spread{animation:g-appearance 1.2s .28s ease forwards}
 .g-book-binding{position:absolute;z-index:1;left:49.5%;top:6%;height:79%;width:2%;background:linear-gradient(90deg,transparent,#25120d3a 50%,transparent);pointer-events:none}
 .g-folio{position:absolute;z-index:2;top:14%;height:62%;color:#291810;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#8b56443b transparent}
 .g-folio-left{left:15%;width:31%;padding-right:1%}
@@ -60,7 +52,7 @@
 .g-folio-text{width:100%;flex:1}
 .g-folio-text p{font:500 clamp(12px,1.25vw,16px)/1.28 'Cormorant Garamond',Georgia,serif;color:#21130d;margin:0 0 10px;text-wrap:pretty;overflow-wrap:anywhere;hyphens:auto}
 .g-folio-text .g-folio-quote{font-style:italic;color:#772e27;font-size:1.1em}
-.g-folio-text .g-folio-oath{border-left:2px solid #882a21;padding-left:8px}
+.g-folio-text .g-folio-oath{border-left:1px solid #882a21;padding-left:8px}
 .g-folio-text .g-folio-laws{font-weight:700;color:#6f1716;letter-spacing:.04em}
 .g-folio-number{display:block;width:100%;text-align:center;margin-top:auto;font:700 10px Georgia,serif;color:#6d2c21}
 .g-illustration{overflow:hidden}
@@ -69,65 +61,18 @@
 .g-stage .g-page-left{left:12.2%}.g-stage .g-page-right{right:14.9%}
 .g-stage .g-page-circle:disabled{opacity:.3;cursor:not-allowed}
 .g-stage .g-page-circle:hover:not(:disabled){background:#79221e;scale:1.08}
-.g-launch-cover{position:absolute;z-index:10;left:30%;top:2%;width:40%;height:91%;background:linear-gradient(#160608,#190a10);border:8px ridge #5b292a;border-radius:5px 14px 14px 5px;box-shadow:0 22px 24px #000e,inset 0 0 0 5px #13090a,inset 0 0 0 8px #9a4440;transform-origin:2% center;backface-visibility:hidden;overflow:hidden}
-.g-launch-cover-art{position:absolute;inset:7%;background:url('/assets/grimorio-capa-relevo.webp') center/cover no-repeat;filter:contrast(1.18)}
-.g-launch-cover-jewel{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);font-size:30px;color:#f32521;text-shadow:0 0 9px #ed1919}
-.g-stage-scythe{position:absolute;z-index:11;left:58%;top:-13%;width:20%;height:61%;pointer-events:none;transform:rotate(-17deg);opacity:0}
-.g-stage-scythe img{width:100%;height:100%;object-fit:contain}
-.g-stage.g-is-open .g-launch-cover{display:none}
-.g-stage.g-is-open .g-stage-scythe{opacity:1}
-.g-stage.g-opening .g-launch-cover{animation:g-cover-open 1.17s cubic-bezier(.31,.03,.25,1) forwards}
-.g-stage.g-opening .g-stage-scythe{animation:g-scythe-enter 1.2s .2s both}
-.g-stage.g-arriving{animation:g-arrive .7s cubic-bezier(.13,.79,.17,1.08) both}
-.g-flip-sheet{position:absolute;z-index:9;top:10%;height:73%;width:42%;display:none;transform-style:preserve-3d;backface-visibility:hidden;overflow:hidden;box-shadow:0 3px 26px #3c211b55;background:linear-gradient(100deg,#6a433323,transparent 50%,#f7d29a63),url('/assets/grimorio-folha-papel.webp') center/100% 100% no-repeat;color:#26160f}
-.g-flip-sheet.g-flip-next{display:block;right:10%;transform-origin:left center}
-.g-flip-sheet.g-flip-previous{display:block;left:10%;transform-origin:right center}
-.g-flip-sheet .g-flip-inner{position:absolute;inset:6% 9%;height:90%;width:82%;overflow:hidden;opacity:.8}
-.g-flip-sheet .g-flip-inner.g-illustration{background:url('/assets/grimorio-folha-ilustrada.webp') center/cover no-repeat}
-.g-flip-sheet .g-folio-inner{padding:0 3%}
-.g-flip-sheet .g-folio-text p{font-size:clamp(12px,1.25vw,15px)}
-.g-page-fold{position:absolute;z-index:12;right:0;top:0;width:0;height:0;opacity:0;pointer-events:none;filter:drop-shadow(-4px 6px 7px #3110078c)}
-.g-flip-sheet.g-flip-next .g-page-fold{clip-path:polygon(100% 0,0 0,100% 100%);background:linear-gradient(135deg,#f8dcaf,#80533f 50%,#35201a);border-bottom-left-radius:80% 35%}
-.g-flip-sheet.g-flip-previous .g-page-fold{left:0;right:auto;clip-path:polygon(0 0,100% 0,0 100%);background:linear-gradient(45deg,#341b15,#8c6045,#f7d6a4);border-bottom-right-radius:80% 35%}
-.g-flip-sheet.g-curl-prep.g-flip-next{animation:g-curl-right .45s ease-out both}
-.g-flip-sheet.g-curl-prep.g-flip-previous{animation:g-curl-left .45s ease-out both}
-.g-flip-sheet.g-curl-prep .g-page-fold{animation:g-corner-curl .45s ease-out forwards}
-.g-flip-sheet.g-flip-next.g-flip-animate{animation:g-turn-next 1.06s cubic-bezier(.37,.01,.55,.98) forwards}
-.g-flip-sheet.g-flip-previous.g-flip-animate{animation:g-turn-prev 1.06s cubic-bezier(.37,.01,.55,.98) forwards}
-.g-flip-sheet.g-flip-animate .g-page-fold{animation:g-corner-fold-away .44s forwards}
-.g-cut-trail{position:absolute;z-index:12;pointer-events:none;left:-16%;top:48%;width:0;height:3px;opacity:0;transform:rotate(-13deg);transform-origin:left center;background:linear-gradient(90deg,#ff3b00,#fff0a9 50%,#ff4b08 75%,transparent);filter:drop-shadow(0 0 13px #ff3200) drop-shadow(0 0 3px #ff8a00)}
-.g-cut-scythe{position:absolute;z-index:14;left:-23%;top:-30%;height:70%;width:22%;opacity:0;pointer-events:none;transform:rotate(-51deg)}
-.g-cut-scythe img{width:100%;height:100%;object-fit:contain}
-.g-stage.g-cut-active .g-cut-trail{animation:g-cut-line .93s ease-in both}
-.g-stage.g-cut-active .g-cut-scythe{animation:g-cut-swing .95s cubic-bezier(.12,.65,.47,1) both}
 .g-controls{width:min(1200px,95vw);z-index:15;flex:0 0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding-top:11px}
 .g-page-arrow{justify-self:start;border:1px solid #682522;background:#21090a;color:#e3b6a4;min-width:133px;min-height:37px;padding:8px 16px;cursor:pointer;font:700 10px var(--body,Arial,sans-serif);letter-spacing:.1em;transition:background .2s}
 .g-page-arrow:hover:not(:disabled){background:#68221d}.g-page-arrow:disabled{opacity:.36;cursor:not-allowed}.g-next{justify-self:end}
 .g-chapter-controls{display:flex;gap:13px;align-items:center;font:700 9px var(--body,Arial,sans-serif);letter-spacing:.09em;color:#af7b66}
 .g-chapter-select{min-height:36px;width:215px;border:1px solid #643730;padding:8px;background:#180909;color:#e6c4aa;font:600 10px var(--body,Arial,sans-serif)}
-.g-page-count{white-space:nowrap;color:#a56658}
-.g-reader-hint{z-index:10;font:10px var(--body,Arial,sans-serif);color:#987a6d;margin:4px 0 0;letter-spacing:.02em}
-@keyframes g-flame-breathe{0%{filter:drop-shadow(0 0 5px #e53300a1) drop-shadow(0 0 13px #ff4e00a5) brightness(.96) saturate(1)}100%{filter:drop-shadow(0 0 12px #ff4200e6) drop-shadow(0 0 27px #f92700e8) brightness(1.24) saturate(1.35)}}
-@keyframes g-flare{from{opacity:.48;transform:scale(.82) rotate(-7deg)}to{opacity:1;transform:scale(1.18) rotate(6deg)}}
-@keyframes g-embers{0%{opacity:.08;transform:translate(0,13px)}35%{opacity:1}100%{opacity:0;transform:translate(24px,-37px)}}
-@keyframes g-arrive{0%{opacity:0;transform:translateY(210px) scale(.35) rotateX(25deg)}55%{opacity:1;transform:translateY(-26px) scale(1.07) rotateX(-7deg)}100%{opacity:1;transform:translateY(0) scale(1) rotateX(0)}}
-@keyframes g-appearance{0%{opacity:0;filter:brightness(.22)}100%{opacity:1;filter:brightness(1)}}
-@keyframes g-cover-open{0%{transform:rotateY(0) translateX(0);opacity:1}22%{transform:rotateY(-17deg) translateX(8%);opacity:1}80%{transform:rotateY(-157deg) translateX(33%);opacity:1}100%{transform:rotateY(-176deg) translateX(42%);opacity:0}}
-@keyframes g-scythe-enter{0%{opacity:0;transform:translateX(110%) rotate(45deg)}100%{opacity:1;transform:translateX(0) rotate(-17deg)}}
-@keyframes g-curl-right{0%{transform:perspective(1200px) rotateY(0) skewY(0);border-top-right-radius:0}55%{transform:perspective(1200px) rotateY(-5deg) skewY(-.8deg);border-top-right-radius:45% 14%;filter:brightness(.91)}100%{transform:perspective(1200px) rotateY(-14deg) skewY(-.6deg);border-top-right-radius:60% 18%;filter:brightness(.86)}}
-@keyframes g-curl-left{0%{transform:perspective(1200px) rotateY(0) skewY(0);border-top-left-radius:0}55%{transform:perspective(1200px) rotateY(5deg) skewY(.8deg);border-top-left-radius:45% 14%;filter:brightness(.91)}100%{transform:perspective(1200px) rotateY(14deg) skewY(.6deg);border-top-left-radius:60% 18%;filter:brightness(.86)}}
-@keyframes g-corner-curl{0%{opacity:0;width:0;height:0}40%{opacity:.8}100%{opacity:1;width:26%;height:30%}}
-@keyframes g-corner-fold-away{0%{opacity:1;width:26%;height:30%}100%{opacity:0;width:9%;height:16%}}
-@keyframes g-turn-next{0%{transform:perspective(1300px) rotateY(-14deg);filter:brightness(.85)}18%{transform:perspective(1300px) rotateY(-20deg);filter:brightness(.83)}45%{transform:perspective(1300px) rotateY(-86deg);filter:brightness(.54)}100%{transform:perspective(1300px) rotateY(-180deg);filter:brightness(.88);opacity:0}}
-@keyframes g-turn-prev{0%{transform:perspective(1300px) rotateY(14deg);filter:brightness(.85)}18%{transform:perspective(1300px) rotateY(20deg);filter:brightness(.83)}45%{transform:perspective(1300px) rotateY(86deg);filter:brightness(.54)}100%{transform:perspective(1300px) rotateY(180deg);filter:brightness(.88);opacity:0}}
-@keyframes g-cut-line{0%,14%{opacity:0;width:0}35%{opacity:.96;width:42%}70%{opacity:1;width:124%}100%{opacity:0;width:133%}}
-@keyframes g-cut-swing{0%{left:-23%;top:-30%;opacity:0;transform:rotate(-49deg) scale(.75)}12%{opacity:1}50%{left:46%;top:-4%;transform:rotate(-20deg) scale(1.13);opacity:1}100%{left:118%;top:21%;transform:rotate(22deg) scale(.75);opacity:0}}
+.g-page-count{white-space:nowrap;color:#c88d7d}
+.g-reader-hint{z-index:10;font:10px var(--body,Arial,sans-serif);color:#b79789;margin:4px 0 0;letter-spacing:.02em}
 @media(max-width:760px){
   #historia .g-library{min-height:580px;margin-top:-20px}
   .g-altar{min-height:585px;padding:18px 0 45px}
   .g-display{height:329px;width:min(380px,88vw)}
-  .g-book-launch{width:212px;height:288px}
-  .g-hero-scythe{width:188px;height:288px;left:calc(50% + 35px);top:-12px}
+  .g-book-launch{width:189px;height:275px}
   .g-altar-title{font-size:36px}
   .g-altar-description{font-size:16px;line-height:1.35}
   .g-open-button{min-width:min(282px,81vw)}
@@ -136,38 +81,179 @@
   .g-toolbar{width:95vw;min-height:49px;margin-bottom:8px}
   .g-toolbar-logo strong{font-size:27px}.g-toolbar-logo small{font-size:7px}
   .g-toolbar-links>span{display:none}.g-close{width:35px;height:35px}
-  .g-stage{width:min(430px,95vw);height:min(calc(100dvh - 185px),660px);aspect-ratio:auto;max-height:none;perspective:1400px}
-  .g-stage .g-spread{background-image:url('/assets/grimorio-folha.webp');background-size:100% 100%;background-position:center}
-  .g-stage .g-spread.g-first-spread{background-image:url('/assets/grimorio-folha-ilustrada.webp')}
-  .g-stage .g-folio{top:10%;left:13%;width:74%;height:75%;padding:0;overflow-y:auto}
+  .g-stage{--turn-time:670ms;width:min(430px,95vw);height:clamp(170px,calc(100dvh - 160px),min(126vw,550px));aspect-ratio:auto;max-height:none;perspective:1400px}
+  .g-stage .g-spread{perspective:1100px}
+  .g-spread::before{clip-path:url(#g-mobile-outline);background-image:url('/assets/grimorio-folha.webp')}
+  .g-spread.g-first-spread::before{background-image:var(--mobile-illustration),url('/assets/grimorio-folha.webp');background-size:84% 100%,100% 100%;background-position:left center}
+  .g-stage .g-folio{top:10%;left:12%;width:62%;height:75%;padding:0;overflow-y:auto}
   .g-folio-right{display:none}
   .g-folio-text p{font-size:clamp(16px,4vw,20px);line-height:1.32;margin-bottom:13px}
   .g-folio-title{font-size:clamp(25px,7vw,36px);margin-bottom:18px}
   .g-folio-continued{font-size:18px}.g-folio-meta{font-size:10px}
   .g-stage .g-page-circle{width:38px;height:38px;bottom:6%;font-size:21px}
-  .g-stage .g-page-left{left:11%}.g-stage .g-page-right{right:11%}
-  .g-launch-cover{left:3%;width:94%;height:96%}
-  .g-stage-scythe{left:74%;top:-9%;width:34%;height:34%}
-  .g-flip-sheet{top:4%;left:4%;width:92%;height:91%;background:url('/assets/grimorio-folha.webp') center/100% 100% no-repeat}
-  .g-flip-sheet.g-flip-next{right:4%}.g-flip-sheet.g-flip-previous{left:4%}
-  .g-flip-sheet .g-flip-inner{inset:8% 10%;width:80%;height:80%}
-  .g-flip-sheet .g-folio-text p{font-size:clamp(15px,3.8vw,19px)}
-  .g-flip-sheet .g-folio-title{font-size:27px}
+  .g-stage .g-page-left{left:9%}.g-stage .g-page-right{right:19%}
   .g-controls{width:95vw;grid-template-columns:auto 1fr auto;gap:5px;padding-top:8px}
   .g-page-arrow{padding:8px 9px;font-size:9px;min-width:72px}
   .g-chapter-controls{flex-direction:column;gap:3px}.g-chapter-controls label{display:none}
   .g-chapter-select{width:min(160px,37vw);padding:6px;font-size:9px;min-height:33px}
   .g-page-count{font-size:8px}
   .g-reader-hint{text-align:center;font-size:9px;max-width:88vw;line-height:1.25}
-  .g-cut-scythe{width:46%;height:35%}.g-stage.g-cut-active .g-cut-scythe{animation-duration:.95s}
 }
 @media(max-height:620px) and (min-width:761px){.g-stage{width:min(1050px,93vw,calc((100dvh - 119px)*2.31))}.g-toolbar{min-height:35px}.g-toolbar-logo strong{font-size:25px}.g-controls{padding-top:4px}.g-reader-hint{display:none}}
-@media(prefers-reduced-motion:reduce){.g-live-flame img,.g-live-flame:before,.g-live-flame:after{animation:none!important}.g-book-launch,.g-open-button,.g-close,.g-page-circle{transition:none!important}.g-stage.g-arriving,.g-stage.g-opening .g-launch-cover,.g-stage.g-opening .g-spread,.g-stage.g-opening .g-stage-scythe,.g-flip-sheet.g-curl-prep,.g-flip-sheet.g-flip-animate,.g-stage.g-cut-active .g-cut-scythe,.g-stage.g-cut-active .g-cut-trail{animation:none!important}.g-stage.g-opening .g-spread{opacity:1!important}.g-stage.g-opening .g-launch-cover,.g-cut-scythe{display:none!important}}
 
-/* Foice em repouso no canto externo: nunca cobre o texto do livro. */
-.g-stage-scythe{left:90%;top:0;width:14%;height:43%;transform:rotate(-23deg)}
-.g-stage.g-cut-active .g-stage-scythe{opacity:0!important}
 
-.g-live-flame .g-fire-spark{position:absolute;z-index:5;width:3px;height:3px;background:#fff0a4;border-radius:40%;box-shadow:0 0 5px 2px #ff4e00,0 0 10px 2px #d82005;opacity:0;pointer-events:none;animation:g-spark-drift var(--duration,1.4s) ease-out var(--delay,0s) infinite}
-@keyframes g-spark-drift{0%{opacity:0;transform:translate3d(0,4px,0) scale(.5)}20%{opacity:.9}80%{opacity:.7}100%{opacity:0;transform:translate3d(var(--dx,14px),var(--dy,-31px),0) scale(.05)}}
-@media(prefers-reduced-motion:reduce){.g-live-flame .g-fire-spark{display:none!important;animation:none!important}}
+
+.g-cover-volume {
+  position:absolute; inset:0; transform-style:preserve-3d;
+  filter:drop-shadow(9px 15px 8px #000c);
+}
+.g-cover-volume::before,.g-cover-volume::after {
+  content:""; position:absolute; inset:0;
+  border-radius:9% 6% 5% 9% / 5% 4% 4% 5%;
+  clip-path:url(#g-cover-outline);
+}
+.g-cover-volume::before {
+  transform:translate(4%,2%); background:
+    repeating-linear-gradient(1deg,#382319 0 1px,#69503a 1px 2px,#3d2c25 2px 3px);
+  box-shadow:inset -5px -4px 12px #160d0c;
+}
+.g-cover-volume::after {
+  background:linear-gradient(90deg,#0d070c99,transparent 12% 90%,#210b0e50),
+    url('/assets/grimorio-capa-relevo.webp') left 57% / 170% 111% no-repeat;
+  box-shadow:inset 4px 0 8px #12090e;
+}
+.g-launch-cover {
+  position:absolute; z-index:10; left:50%; top:3%; width:37%; height:88%;
+  transform-origin:0 50%; pointer-events:none;
+}
+.g-launch-cover .g-cover-volume { inset:0 19% 0 0 }
+.g-hero-scythe {
+  z-index:3; width:244px; left:calc(50% + 49px); top:-2px; transform:rotate(-20deg);
+}
+.g-dialog :focus-visible,.g-open-button:focus-visible { outline:2px solid #f2a889; outline-offset:3px }
+@media (max-width:760px) {
+  .g-launch-cover { left:8%; top:3%; width:81%; height:90% }
+  .g-launch-cover .g-cover-volume { inset:0 10% 0 0 }
+  .g-hero-scythe { width:145px; left:calc(50% + 21px); top:-5px }
+}
+/* Each face uses the same coordinates, art and typography as the resting folio. */
+.g-flip-sheet {
+  position:absolute; z-index:9; inset:0 auto 0 50%; width:40%;
+  transform-origin:left center; transform-style:preserve-3d; pointer-events:none;
+}
+.g-flip-sheet[hidden], .g-launch-cover[hidden] { display:none }
+.g-turn-previous { left:10%; transform-origin:right center }
+.g-sheet-tip {
+  position:absolute; inset:0 0 0 auto; width:24%;
+  transform-origin:left center; transform-style:preserve-3d;
+}
+.g-turn-previous .g-sheet-tip { left:0; right:auto; transform-origin:right center }
+.g-sheet-strip { position:absolute; inset:0 auto 0 0; transform-style:preserve-3d }
+.g-sheet-body { width:76% }
+.g-turn-previous .g-sheet-body { left:24% }
+.g-sheet-edge { width:100% }
+.g-sheet-face {
+  position:absolute; inset:0; overflow:hidden; backface-visibility:hidden;
+}
+.g-sheet-back { transform:rotateY(180deg) }
+.g-sheet-print { position:absolute; inset:0 auto 0 0; width:131.578947% }
+.g-sheet-edge .g-sheet-print { width:416.666667% }
+.g-turn-next .g-sheet-body .g-sheet-back .g-sheet-print,
+.g-turn-previous .g-sheet-body .g-sheet-front .g-sheet-print { left:-31.578947% }
+.g-turn-next .g-sheet-edge .g-sheet-front .g-sheet-print,
+.g-turn-previous .g-sheet-edge .g-sheet-back .g-sheet-print { left:-316.666667% }
+.g-print-left {
+  clip-path:url(#g-paper-left);
+}
+.g-print-right {
+  clip-path:url(#g-paper-right);
+}
+.g-sheet-art {
+  position:absolute; inset:0 auto 0 -25%; width:250%;
+  background:url('/assets/grimorio-aberto-paginas.webp') center / 100% 100% no-repeat;
+}
+.g-print-right .g-sheet-art { left:-125% }
+.g-print-illustrated .g-sheet-art { background-image:url('/assets/grimorio-aberto-primeira.webp') }
+.g-sheet-print::after {
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(90deg,#24110532,transparent 21%,transparent 80%,#ffe9b621);
+  opacity:var(--paper-shade,0);
+}
+.g-cut-active .g-sheet-print::after { animation:g-paper-shade var(--turn-time) ease both }
+@keyframes g-paper-shade { 0%,100% { opacity:0 } 45%,65% { opacity:.85 } }
+
+.g-cut-trail {
+  position:absolute; z-index:12; inset:0; width:100%; height:100%;
+  pointer-events:none; opacity:0; overflow:visible;
+}
+.g-cut-trail path {
+  fill:none; stroke:#ffe8aa; stroke-width:2; stroke-linecap:round; stroke-dasharray:1;
+  vector-effect:non-scaling-stroke; filter:drop-shadow(0 0 5px #ff4308);
+}
+.g-cut-active .g-cut-trail { animation:g-cut-glow .5s .14s ease-out both }
+.g-cut-active .g-cut-trail path { animation:g-cut-trace .5s .14s ease-out both }
+@keyframes g-cut-glow { 0%,100% { opacity:0 } 26% { opacity:.9 } }
+@keyframes g-cut-trace { from { stroke-dashoffset:1 } to { stroke-dashoffset:-.25 } }
+.g-cut-scythe {
+  z-index:14; left:0; top:0; width:23%; opacity:0;
+}
+.g-stage-scythe { z-index:11; right:0; top:-3%; width:12%; opacity:0; transform:rotate(-22deg); transition:opacity .24s ease }
+.g-is-open .g-stage-scythe { opacity:1 }
+.g-stage.g-cut-active .g-stage-scythe { opacity:0; transition-duration:.12s }
+
+.g-live-flame { position:absolute; aspect-ratio:950 / 1353; pointer-events:none }
+.g-live-flame img { width:100%; height:100%; display:block; filter:drop-shadow(0 0 5px #f4421555) }
+.g-blade-fire { position:absolute; inset:0; pointer-events:none }
+.g-flame-tongue {
+  position:absolute; width:7%; height:var(--height); margin-left:-3.5%; margin-top:calc(-1 * var(--height));
+  background:radial-gradient(ellipse at 46% 87%,#fff5b2 4%,#ffc449 28%,#ff5e08 53%,#d91c0a96 73%,transparent 82%);
+  border-radius:87% 16% 64% 38% / 89% 35% 68% 22%;
+  transform-origin:48% 100%; mix-blend-mode:screen; opacity:0;
+}
+.g-fire-spark {
+  position:absolute; width:clamp(1px,.19vw,3px); aspect-ratio:1;
+  border-radius:50%; background:#fff0b2; box-shadow:0 0 4px 1px #f9520b; opacity:0;
+}
+.g-flame-running .g-flame-tongue,
+.g-is-open .g-stage-scythe .g-flame-tongue,
+.g-cut-active .g-cut-scythe .g-flame-tongue {
+  animation:g-flame-tongue var(--pace) var(--phase) linear infinite;
+}
+.g-flame-running .g-fire-spark,
+.g-is-open .g-stage-scythe .g-fire-spark,
+.g-cut-active .g-cut-scythe .g-fire-spark {
+  animation:g-spark-drift var(--pace) var(--phase) ease-out infinite;
+}
+.g-cut-active .g-stage-scythe .g-blade-fire { visibility:hidden }
+@keyframes g-flame-tongue {
+  0%,100% { opacity:0; transform:translateY(11%) scale(.55,.4) skewX(-12deg) }
+  24% { opacity:.85; transform:translateY(0) scale(.8,1) skewX(-14deg) }
+  55% { opacity:.65; transform:translateY(-22%) scale(.6,1.15) skewX(18deg) }
+  79% { opacity:.28; transform:translateY(-45%) scale(.41,.85) skewX(26deg) }
+}
+@keyframes g-spark-drift {
+  0%,12% { opacity:0; transform:translate3d(0,1px,0) scale(.45) }
+  26% { opacity:.94 }
+  100% { opacity:0; transform:translate3d(var(--dx),-34px,0) scale(.05) }
+}
+
+@media (max-width:760px) {
+  .g-flip-sheet, .g-turn-previous { inset:0; width:100% }
+  .g-flip-sheet { transform-origin:5% center }
+  .g-turn-previous { transform-origin:82% center }
+  .g-sheet-art, .g-print-right .g-sheet-art {
+    left:0; width:100%; background-image:url('/assets/grimorio-folha.webp');
+  }
+  .g-print-left, .g-print-right {
+    clip-path:url(#g-paper-mobile);
+  }
+  .g-print-illustrated .g-sheet-art { background-image:var(--mobile-illustration),url('/assets/grimorio-folha.webp'); background-size:84% 100%,100% 100%; background-position:left center }
+  .g-stage-scythe { right:-3%; top:-4%; width:27% }
+  .g-cut-scythe { width:48% }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .g-live-flame .g-flame-tongue, .g-live-flame .g-fire-spark,
+  .g-cut-trail, .g-cut-trail path { animation:none!important }
+  .g-book-launch,.g-open-button,.g-close,.g-page-circle,.g-stage-scythe { transition:none!important }
+}
