@@ -42,19 +42,45 @@ html:has(.g-dialog[open]){overflow:hidden}
 .g-spread.g-first-spread::before{background-image:url('/assets/grimorio-aberto-primeira.webp')}
 .g-stage.g-is-open .g-spread{opacity:1}
 .g-book-binding{position:absolute;z-index:1;left:49.5%;top:6%;height:79%;width:2%;background:linear-gradient(90deg,transparent,#25120d3a 50%,transparent);pointer-events:none}
-.g-folio{position:absolute;z-index:2;top:14%;height:62%;color:#291810;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#8b56443b transparent}
-.g-folio-left{left:15%;width:31%;padding-right:1%}
-.g-folio-right{left:54.5%;width:30.5%;padding-left:1%}
-.g-folio-inner{min-height:100%;display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:0 2px 5px}
-.g-folio-meta{font:600 clamp(9px,.86vw,12px) 'Cormorant Garamond',Georgia,serif;letter-spacing:.15em;color:#7f392b;text-align:center;width:100%;margin:0 0 8px}
-.g-folio-title{font:700 clamp(20px,2.1vw,29px)/1.07 'Cormorant Garamond',Georgia,serif;color:#3c170e;text-align:center;width:100%;margin:0 0 14px}
-.g-folio-continued{font:600 clamp(15px,1.4vw,18px)/1.09 'Cormorant Garamond',Georgia,serif;color:#702d23;text-align:center;width:100%;margin:0 0 10px}
-.g-folio-text{width:100%;flex:1}
-.g-folio-text p{font:500 clamp(12px,1.25vw,16px)/1.28 'Cormorant Garamond',Georgia,serif;color:#21130d;margin:0 0 10px;text-wrap:pretty;overflow-wrap:anywhere;hyphens:auto}
-.g-folio-text .g-folio-quote{font-style:italic;color:#772e27;font-size:1.1em}
-.g-folio-text .g-folio-oath{border-left:1px solid #882a21;padding-left:8px}
-.g-folio-text .g-folio-laws{font-weight:700;color:#6f1716;letter-spacing:.04em}
-.g-folio-number{display:block;width:100%;text-align:center;margin-top:auto;font:700 10px Georgia,serif;color:#6d2c21}
+@font-face {
+  font-family:'EB Garamond'; src:url('/assets/fonts/eb-garamond-normal.woff2') format('woff2');
+  font-style:normal; font-weight:400 700; font-display:swap;
+}
+@font-face {
+  font-family:'EB Garamond'; src:url('/assets/fonts/eb-garamond-italic.woff2') format('woff2');
+  font-style:italic; font-weight:400; font-display:swap;
+}
+/* Resting and moving folios share the same printable area. */
+.g-folio {
+  --ink-serif:'EB Garamond','Cormorant Garamond',Georgia,serif;
+  position:absolute; z-index:2; top:14%; height:63%; width:29%;
+  color:#291810; font-family:var(--ink-serif); text-align:start;
+  overflow-y:auto; overflow-x:hidden; scrollbar-width:thin;
+  scrollbar-color:#8b564460 transparent; scrollbar-gutter:stable both-edges;
+}
+.g-folio-left { left:17% }
+.g-folio-right { left:54% }
+.g-folio-inner { min-height:100%; display:flex; flex-direction:column; padding:0 0 5px }
+.g-folio-meta, .g-folio-title, .g-folio-continued, .g-folio-number { text-align:center }
+.g-folio-meta {
+  font-size:clamp(10px,1vw,13px); font-weight:600; line-height:1.1;
+  letter-spacing:.13em; color:#663021; margin:0 0 7px;
+}
+.g-folio-title, .g-folio-continued {
+  font-weight:600; color:#3c170e; letter-spacing:-.012em; text-wrap:balance;
+}
+.g-folio-title { font-size:clamp(22px,2.25vw,31px); line-height:1.07; margin:0 0 13px }
+.g-folio-continued { font-size:clamp(17px,1.5vw,21px); line-height:1.12; margin:0 0 10px }
+.g-folio-text { flex:1; margin-bottom:.5rem }
+.g-folio-text p {
+  font-size:clamp(14px,1.33vw,18px); line-height:1.4; color:#21130d;
+  margin:0 0 .6em; text-wrap:pretty; overflow-wrap:break-word;
+}
+.g-folio-text p:last-child { margin-bottom:0 }
+.g-folio-text .g-folio-quote { font-style:italic; color:#62271d }
+.g-folio-text .g-folio-oath { padding-inline-start:.9em; text-indent:-.9em }
+.g-folio-text .g-folio-laws { font-weight:700; color:#6f1716; letter-spacing:.04em }
+.g-folio-number { margin-top:auto; font-size:12px; line-height:1; font-weight:600; color:#6d2c21 }
 .g-illustration{overflow:hidden}
 .g-illustration-caption{position:absolute;bottom:0;left:0;right:0;text-align:center;font:700 9px Georgia,serif;letter-spacing:.22em;color:#5f2a23;text-shadow:0 2px 7px #f1bb8f}
 .g-stage .g-page-circle{position:absolute;z-index:8;bottom:17%;width:4%;aspect-ratio:1;border:1px solid #bb3833;border-radius:50%;background:radial-gradient(circle,#470805,#190506 80%);color:#ffd3bf;font-size:clamp(19px,2.3vw,32px);font-weight:300;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 9px #da242450,inset 0 0 9px #b4181855;transition:background .2s,scale .2s}
@@ -85,10 +111,10 @@ html:has(.g-dialog[open]){overflow:hidden}
   .g-stage .g-spread{perspective:1100px}
   .g-spread::before{clip-path:url(#g-mobile-outline);background-image:url('/assets/grimorio-folha.webp')}
   .g-spread.g-first-spread::before{background-image:var(--mobile-illustration),url('/assets/grimorio-folha.webp');background-size:84% 100%,100% 100%;background-position:left center}
-  .g-stage .g-folio{top:10%;left:12%;width:62%;height:75%;padding:0;overflow-y:auto}
+  .g-stage .g-folio{top:10%;left:11.5%;width:62%;height:75%}
   .g-folio-right{display:none}
-  .g-folio-text p{font-size:clamp(16px,4vw,20px);line-height:1.32;margin-bottom:13px}
-  .g-folio-title{font-size:clamp(25px,7vw,36px);margin-bottom:18px}
+  .g-folio-text p{font-size:clamp(16px,4.4vw,19px);line-height:1.39}
+  .g-folio-title{font-size:clamp(23px,6.4vw,31px);margin-bottom:13px}
   .g-folio-continued{font-size:18px}.g-folio-meta{font-size:10px}
   .g-stage .g-page-circle{width:38px;height:38px;bottom:6%;font-size:21px}
   .g-stage .g-page-left{left:9%}.g-stage .g-page-right{right:19%}
@@ -179,27 +205,11 @@ html:has(.g-dialog[open]){overflow:hidden}
   background:linear-gradient(90deg,#24110532,transparent 21%,transparent 80%,#ffe9b621);
   opacity:var(--paper-shade,0);
 }
-.g-cut-active .g-sheet-print::after { animation:g-paper-shade var(--turn-time) ease both }
+.g-page-turning .g-sheet-print::after { animation:g-paper-shade var(--turn-time) ease both }
 @keyframes g-paper-shade { 0%,100% { opacity:0 } 45%,65% { opacity:.85 } }
 
-.g-cut-trail {
-  position:absolute; z-index:12; inset:0; width:100%; height:100%;
-  pointer-events:none; opacity:0; overflow:visible;
-}
-.g-cut-trail path {
-  fill:none; stroke:#ffe8aa; stroke-width:2; stroke-linecap:round; stroke-dasharray:1;
-  vector-effect:non-scaling-stroke; filter:drop-shadow(0 0 5px #ff4308);
-}
-.g-cut-active .g-cut-trail { animation:g-cut-glow .5s .14s ease-out both }
-.g-cut-active .g-cut-trail path { animation:g-cut-trace .5s .14s ease-out both }
-@keyframes g-cut-glow { 0%,100% { opacity:0 } 26% { opacity:.9 } }
-@keyframes g-cut-trace { from { stroke-dashoffset:1 } to { stroke-dashoffset:-.25 } }
-.g-cut-scythe {
-  z-index:14; left:0; top:0; width:23%; opacity:0;
-}
 .g-stage-scythe { z-index:11; right:0; top:-3%; width:12%; opacity:0; transform:rotate(-22deg); transition:opacity .24s ease }
 .g-is-open .g-stage-scythe { opacity:1 }
-.g-stage.g-cut-active .g-stage-scythe { opacity:0; transition-duration:.12s }
 
 .g-live-flame { position:absolute; aspect-ratio:950 / 1353; pointer-events:none }
 .g-live-flame img { width:100%; height:100%; display:block; filter:drop-shadow(0 0 5px #f4421555) }
@@ -215,16 +225,13 @@ html:has(.g-dialog[open]){overflow:hidden}
   border-radius:50%; background:#fff0b2; box-shadow:0 0 4px 1px #f9520b; opacity:0;
 }
 .g-flame-running .g-flame-tongue,
-.g-is-open .g-stage-scythe .g-flame-tongue,
-.g-cut-active .g-cut-scythe .g-flame-tongue {
+.g-is-open .g-stage-scythe .g-flame-tongue {
   animation:g-flame-tongue var(--pace) var(--phase) linear infinite;
 }
 .g-flame-running .g-fire-spark,
-.g-is-open .g-stage-scythe .g-fire-spark,
-.g-cut-active .g-cut-scythe .g-fire-spark {
+.g-is-open .g-stage-scythe .g-fire-spark {
   animation:g-spark-drift var(--pace) var(--phase) ease-out infinite;
 }
-.g-cut-active .g-stage-scythe .g-blade-fire { visibility:hidden }
 @keyframes g-flame-tongue {
   0%,100% { opacity:0; transform:translateY(11%) scale(.55,.4) skewX(-12deg) }
   24% { opacity:.85; transform:translateY(0) scale(.8,1) skewX(-14deg) }
@@ -249,11 +256,9 @@ html:has(.g-dialog[open]){overflow:hidden}
   }
   .g-print-illustrated .g-sheet-art { background-image:var(--mobile-illustration),url('/assets/grimorio-folha.webp'); background-size:84% 100%,100% 100%; background-position:left center }
   .g-stage-scythe { right:-3%; top:-4%; width:27% }
-  .g-cut-scythe { width:48% }
 }
 
 @media (prefers-reduced-motion:reduce) {
-  .g-live-flame .g-flame-tongue, .g-live-flame .g-fire-spark,
-  .g-cut-trail, .g-cut-trail path { animation:none!important }
+  .g-live-flame .g-flame-tongue, .g-live-flame .g-fire-spark { animation:none!important }
   .g-book-launch,.g-open-button,.g-close,.g-page-circle,.g-stage-scythe { transition:none!important }
 }

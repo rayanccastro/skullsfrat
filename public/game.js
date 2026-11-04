@@ -1,5 +1,5 @@
-import {generateMaze,findPath,normalizeProgress,createRun,setRunDirection,advanceRun,pauseRun,resumeRun,snakePolyline} from './snake-engine.js?v=c876f8bd5dbe';
-export {generateMaze,findPath,normalizeProgress} from './snake-engine.js?v=c876f8bd5dbe';
+import {generateMaze,findPath,normalizeProgress,createRun,setRunDirection,advanceRun,pauseRun,resumeRun,snakePolyline} from './snake-engine.js?v=ba576ea73614';
+export {generateMaze,findPath,normalizeProgress} from './snake-engine.js?v=ba576ea73614';
 export const SINS=Object.freeze([
   {name:'Soberba',title:'O espelho',clue:'No alto do próprio pedestal, até a sombra parece pequena. Quem só contempla a si mesmo deixa de enxergar a saída.'},
   {name:'Avareza',title:'As mãos fechadas',clue:'Guarda todas as chaves, mas não abre nenhuma porta. O medo de perder transforma abrigo em prisão.'},

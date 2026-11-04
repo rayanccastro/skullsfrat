@@ -99,10 +99,6 @@ export function mountGrimoire({ acts, ceifadoraPrologue }) {
         <article class="g-folio g-folio-right"></article>
         <span class="g-book-binding" aria-hidden="true"></span>
         <div class="g-flip-sheet" aria-hidden="true" hidden></div>
-        <svg class="g-cut-trail" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M -30 265 Q 470 248 1040 103" pathLength="1"/>
-        </svg>
-        <div class="g-cut-scythe g-live-flame" aria-hidden="true"><img src="/assets/foice-ceifadora-chamas.webp" alt=""></div>
         <button type="button" class="g-page-circle g-page-left" aria-label="Página anterior">←</button>
         <button type="button" class="g-page-circle g-page-right" aria-label="Próxima página">→</button>
       </div>
@@ -147,7 +143,6 @@ export function mountGrimoire({ acts, ceifadoraPrologue }) {
   const right = modal.querySelector('.g-folio-right');
   const flip = modal.querySelector('.g-flip-sheet');
   const cover = modal.querySelector('.g-launch-cover');
-  const slash = modal.querySelector('.g-cut-scythe');
   const edgePrev = modal.querySelector('.g-page-left');
   const edgeNext = modal.querySelector('.g-page-right');
   const prev = modal.querySelector('.g-prev');
@@ -239,7 +234,7 @@ export function mountGrimoire({ acts, ceifadoraPrologue }) {
     flip.hidden = true;
     flip.replaceChildren();
     cover.hidden = true;
-    stage.classList.remove('g-cut-active', 'g-opening');
+    stage.classList.remove('g-page-turning', 'g-opening');
     select.removeAttribute('aria-disabled');
     spread.removeAttribute('aria-busy');
   }
@@ -333,9 +328,7 @@ export function mountGrimoire({ acts, ceifadoraPrologue }) {
       if (!forward && destination === 0) spread.classList.add('g-first-spread');
     }
     select.setAttribute('aria-disabled', 'true');
-    stage.classList.add('g-cut-active');
-    const sweep = stage.clientWidth / slash.offsetWidth;
-    const fall = stage.clientHeight / slash.offsetHeight;
+    stage.classList.add('g-page-turning');
     const duration = mobile ? 670 : 820;
     const animations = [
       flip.animate([
@@ -348,13 +341,7 @@ export function mountGrimoire({ acts, ceifadoraPrologue }) {
         { transform: `rotateY(${sign * 29}deg)`, offset: .24, easing: 'ease-in-out' },
         { transform: `rotateY(${sign * -9}deg)`, offset: .68, easing: 'ease-out' },
         { transform: 'rotateY(0deg)', offset: 1 }
-      ], { duration, fill: 'both' }),
-      slash.animate([
-        { transform: `translate3d(${-38 * sweep}%, ${57 * fall}%, 0) rotate(-47deg) scale(.84)`, opacity: 0, offset: 0 },
-        { opacity: 1, offset: .22 },
-        { transform: `translate3d(${43 * sweep}%, ${42 * fall}%, 0) rotate(19deg) scale(1.04)`, opacity: .94, offset: .69 },
-        { transform: `translate3d(${105 * sweep}%, ${24 * fall}%, 0) rotate(46deg) scale(.85)`, opacity: 0, offset: 1 }
-      ], { duration: duration * .75, delay: 35, easing: 'cubic-bezier(.47,.02,.29,1)', fill: 'both' })
+      ], { duration, fill: 'both' })
     ];
     play(animations, destination, () => {
       at = destination;
