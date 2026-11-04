@@ -29,7 +29,7 @@ function timeText(seconds){const s=Math.max(0,Math.ceil(seconds));return `${Stri
 export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!after||document.getElementById('lucifer-game'))return()=>{};
  if(!document.querySelector('link[data-lucifer-css]')){
-  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css';css.dataset.luciferCss='';document.head.append(css);
+  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=lucifer-cars-v2-20261104';css.dataset.luciferCss='';document.head.append(css);
  }
  const section=document.createElement('section');section.id='lucifer-game';section.className='lucifer-section section-space';
  section.innerHTML=`<div class="shell">
@@ -54,17 +54,61 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  after.insertAdjacentElement('afterend',section);
  const nav=document.querySelector('.site-header nav');
  if(nav&&!nav.querySelector('a[href="#lucifer-game"]')){const a=document.createElement('a');a.href='#lucifer-game';a.textContent='Lucifer';const last=nav.querySelector('.nav-join');last?nav.insertBefore(a,last):nav.append(a);}
+ const stage = $(section,'.lucifer-stage');
+ const rankButton = document.createElement('button');
+ rankButton.type='button';
+ rankButton.className='lucifer-ranking-floating';
+ rankButton.setAttribute('aria-haspopup','dialog');
+ rankButton.setAttribute('aria-controls','lucifer-ranking-dialog');
+ rankButton.innerHTML='<span aria-hidden="true">♛</span><span>VER RANKING</span>';
+ const rankDialog=document.createElement('dialog');
+ rankDialog.id='lucifer-ranking-dialog';
+ rankDialog.className='lucifer-ranking-dialog';
+ rankDialog.setAttribute('aria-labelledby','lucifer-ranking-dialog-title');
+ rankDialog.innerHTML=`<div class="lucifer-ranking-dialog-inner">
+   <div class="lucifer-ranking-dialog-head">
+     <div><span class="lucifer-ranking-dialog-kicker">SKULLS ARCADE · HALL DA FAMA</span>
+       <h2 id="lucifer-ranking-dialog-title">Ranking do Lucifer</h2>
+     </div>
+     <button type="button" class="lucifer-ranking-dialog-close" data-l-popup-close aria-label="Fechar ranking">✕</button>
+   </div>
+   <p class="lucifer-ranking-dialog-status" data-l-popup-ranking-status aria-live="polite">Carregando pontuações…</p>
+   <div class="lucifer-ranking-table lucifer-ranking-dialog-list" data-l-popup-ranking></div>
+   <button type="button" class="lucifer-ranking-dialog-refresh" data-l-popup-refresh>↻ ATUALIZAR PLACAR</button>
+ </div>`;
+ document.body.append(rankButton,rankDialog);
+ function openRanking(){
+   if(!rankDialog.open)rankDialog.showModal();
+   void loadRanking();
+ }
+ rankButton.addEventListener('click',openRanking);
+ rankDialog.addEventListener('click',event=>{
+   if(event.target===rankDialog || event.target.closest('[data-l-popup-close]')){rankDialog.close();return;}
+   if(event.target.closest('[data-l-popup-refresh]'))void loadRanking();
+ });
  const canvas=$(section,'[data-l-canvas]'),ctx=canvas.getContext('2d');
- if(!ctx)return()=>{section.remove();};
+ if(!ctx)return()=>{rankButton.remove();rankDialog.remove();section.remove();};
  const overlay=$(section,'[data-l-overlay]'),form=$(section,'[data-l-form]'),input=$(section,'#lucifer-player-name');
  const images={};
- for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-atlas.webp',goat:'/assets/lucifer-sprite.png'})){
+ for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-v2.webp',goat:'/assets/lucifer-sprite.png'})){
   const image=new Image();image.src=url;images[key]=image;
  }
  const keys={left:false,right:false,up:false,down:false};
  let phase='welcome',player='',runToken=null,ranked=false,score=0,hits=0,shots=0,combo=0,extraTime=0;
  let remaining=BASE_TIME,aim={x:WIDTH/2,y:205},cars=[],shotsInFlight=[],particles=[],effects=[], last=0,raf=0,elapsed=0,spawnClock=0,shotCooldown=0;
- let messageEnd=0,touchStart=null,remoteRanking=false,carBag=[];
+ let messageEnd=0,touchStart=null,remoteRanking=false,carBag=[],easterTimer=0;
+ function showObscuryEgg(x,y){
+  stage.querySelector('.lucifer-obscury-bubble')?.remove();
+  clearTimeout(easterTimer);
+  const bubble=document.createElement('div');
+  bubble.className='lucifer-obscury-bubble';
+  bubble.setAttribute('role','status');
+  bubble.textContent='Maldito Protagonista';
+  bubble.style.left=(clamp(x,145,WIDTH-145)/WIDTH*100).toFixed(2)+'%';
+  bubble.style.top=(clamp(y-62,46,HEIGHT-100)/HEIGHT*100).toFixed(2)+'%';
+  stage.append(bubble);
+  easterTimer=setTimeout(()=>bubble.remove(),2300);
+ }
  const groundLines=[158,248,339],scenePattern=(x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,w,h);};
  function canPlay(){return phase==='playing';}
  function showNotice(message,seconds=1.25){messageEnd=performance.now()+seconds*1000;$(section,'[data-l-notice]').textContent=message;}
@@ -123,10 +167,10 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   cars.push({x,y:groundLines[lane],dir,index,speed,scale:rand(.9,1.13),wiggle:Math.random()*10});
  }
  function drawCar(car){
-  const w=149*car.scale,h=79*car.scale;
+  const w=177*car.scale,h=65*car.scale;
   if(images.cars.complete&&images.cars.naturalWidth){
    ctx.save();ctx.translate(car.x,car.y);if(car.dir<0)ctx.scale(-1,1);
-   ctx.drawImage(images.cars,(car.index%5)*128,Math.floor(car.index/5)*72,128,72,-w/2,-h/2,w,h);
+   ctx.drawImage(images.cars,(car.index%5)*192,Math.floor(car.index/5)*72,192,72,-w/2,-h/2,w,h);
    ctx.restore();
   }else{
    ctx.save();ctx.translate(car.x,car.y);ctx.fillStyle=['#2d73c7','#b52754','#b5272b','#6728a9','#ffd122'][car.index%5];
@@ -168,13 +212,13 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   }
  }
  function impact(projectile){
-  const candidates=cars.filter(c=>Math.abs(c.x-projectile.tx)<78*c.scale&&Math.abs(c.y-projectile.ty)<43*c.scale);
+  const candidates=cars.filter(c=>Math.abs(c.x-projectile.tx)<88*c.scale&&Math.abs(c.y-projectile.ty)<34*c.scale);
   const target=candidates.sort((a,b)=>Math.abs(a.x-projectile.tx)-Math.abs(b.x-projectile.tx))[0];
   if(target){
    cars.splice(cars.indexOf(target),1);
    hits++;combo++;score+=SCORE_PER_CAR;
    const bonus=Math.min(MAX_BONUS,combo);remaining+=bonus;extraTime+=bonus;
-   makeExplosion(target.x,target.y,true);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
+   makeExplosion(target.x,target.y,true);if(target.index===CAR_NAMES.indexOf('Obscury'))showObscuryEgg(target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
   }else{combo=0;makeExplosion(projectile.tx,projectile.ty,false);showNotice('ERROU! COMBO ZERADO',.7);}
   updateHUD();
  }
@@ -266,7 +310,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   await loadRanking();
  }
  async function loadRanking(){
-  const node=$(section,'[data-l-ranking]'),status=$(section,'[data-l-ranking-status]');
+  const node=$(section,'[data-l-ranking]'),status=$(section,'[data-l-ranking-status]'),popupNode=$(rankDialog,'[data-l-popup-ranking]'),popupStatus=$(rankDialog,'[data-l-popup-ranking-status]');
   let entries=localTop();let mode='local';
   try{
    const result=await requestJSON(START_URL,{},4000);
@@ -274,15 +318,20 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   }catch{}
   remoteRanking=mode==='global';
   status.textContent=remoteRanking?'Placar global, salvo com segurança no banco de dados.':'Placar local deste navegador · configure o Redis na Vercel para ativar o ranking global.';
-  node.replaceChildren();
-  if(!entries.length){const p=document.createElement('p');p.textContent='Ainda não há pontuações. Seja a primeira pessoa a jogar!';node.append(p);return;}
-  entries.slice(0,10).forEach((entry,i)=>{
-   const row=document.createElement('div');row.className='lucifer-ranking-row';
-   const rank=document.createElement('b');rank.textContent=i===0?'♛':String(i+1);
-   const name=document.createElement('span');name.textContent=String(entry.name).slice(0,24);
-   const points=document.createElement('strong');points.textContent=String(Math.max(0,Number(entry.score)||0));
-   row.append(rank,name,points);node.append(row);
-  });
+  popupStatus.textContent=status.textContent;
+  for(const target of [node,popupNode]){
+   target.replaceChildren();
+   if(!entries.length){
+    const empty=document.createElement('p');empty.textContent='Ainda não há pontuações. Seja a primeira pessoa a jogar!';target.append(empty);continue;
+   }
+   entries.slice(0,10).forEach((entry,i)=>{
+    const row=document.createElement('div');row.className='lucifer-ranking-row';
+    const rank=document.createElement('b');rank.textContent=i===0?'♛':String(i+1);
+    const name=document.createElement('span');name.textContent=String(entry.name).slice(0,24);
+    const points=document.createElement('strong');points.textContent=String(Math.max(0,Number(entry.score)||0));
+    row.append(rank,name,points);target.append(row);
+   });
+  }
  }
  function onKeyDown(event){
   if(!canPlay()||event.altKey||event.ctrlKey||event.metaKey)return;
@@ -293,7 +342,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   if(event.code==='Space'){event.preventDefault();if(!event.repeat)throwBottle();}
  }
  function onKeyUp(event){const dir={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[event.key];if(dir)keys[dir]=false;}
- function reset(){if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
+ function reset(){clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
  function onClick(event){
   const b=event.target.closest('button');if(!b)return;
   if(b.matches('[data-l-again]')){reset();input.focus();}
@@ -313,5 +362,5 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  images.goat.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  images.cars.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  showIntro();draw(performance.now(),0);void loadRanking();
- return()=>{stop();window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);section.remove();};
+ return()=>{stop();clearTimeout(easterTimer);window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);if(rankDialog.open)rankDialog.close();rankButton.remove();rankDialog.remove();section.remove();};
 }
