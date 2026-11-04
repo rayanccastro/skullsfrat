@@ -45,8 +45,8 @@ test('sessão com Redis simulado grava e recupera ranking sem permitir reenvio',
   const post=(data)=>new Request(origin,{method:'POST',headers:{'Content-Type':'application/json',Origin:'https://skulls.example'},body:JSON.stringify(data)});
   const start=await luciferLeaderboard(post({action:'start',name:'Lucifer'}),env);
   const run=await start.json();assert.equal(run.ok,true);assert.ok(run.token);
-  time+=120000;
-  const data={action:'finish',token:run.token,name:'Lucifer',score:0,hits:0,shots:0,bonusSec:0,elapsedMs:120000};
+  time+=96000;
+  const data={action:'finish',token:run.token,name:'Lucifer',score:0,hits:0,shots:0,bonusSec:0,escaped:12,elapsedMs:96000};
   const finish=await luciferLeaderboard(post(data),env);assert.equal((await finish.json()).ok,true);
   const repeat=await luciferLeaderboard(post(data),env);assert.equal(repeat.status,409);
   const list=await luciferLeaderboard(new Request(origin),env);assert.deepEqual((await list.json()).entries,[{name:'Lucifer',score:0}]);
@@ -64,4 +64,14 @@ test('erro da Molotov desconta 35 segundos do tempo e preserva bônus',()=>{
  assert.equal(validRun({score:0,hits:0,shots:1,misses:1,bonusSec:0,elapsedMs:10000}),false);
  assert.equal(validRun({score:0,hits:0,shots:1,misses:2,bonusSec:0,elapsedMs:50000}),false);
  assert.equal(validRun({score:0,hits:0,shots:4,misses:4,bonusSec:0,elapsedMs:80000}),false);
+});
+
+test('ranking desconta cada carro que escapou e aceita término antecipado',()=>{
+ const run={score:0,hits:0,shots:0,bonusSec:0,escaped:12};
+ assert.equal(validRun({...run,elapsedMs:96000}),true);
+ assert.equal(validRun({...run,elapsedMs:95000}),true);
+ assert.equal(validRun({...run,elapsedMs:86000}),false);
+ assert.equal(validRun({...run,escaped:-1,elapsedMs:120000}),false);
+ assert.equal(validRun({...run,escaped:110,misses:1,shots:1,elapsedMs:1000}),false);
+ assert.equal(validRun({...run,score:10,hits:1,shots:2,misses:1,bonusSec:1,elapsedMs:62000}),true);
 });

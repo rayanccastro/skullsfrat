@@ -1,9 +1,10 @@
+import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP } from '../web/lucifer-rules.js';
 import { redisWire } from './lucifer-redis-wire.js';
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 
 const LEADERBOARD = 'skulls:lucifer:v1:ranking';
 const SESSION_PREFIX = 'skulls:lucifer:v1:session:';
-const MAX_RUN_MS = 15 * 60 * 1000;
+const MAX_RUN_MS = MAX_RUN_SECONDS * 1000;
 const SESSION_TTL = 17 * 60;
 const json = (obj, status=200)=>Response.json(obj,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 
@@ -14,15 +15,18 @@ export function nickname(name) {
 }
 export function validRun(data){
  const {score,hits,shots,bonusSec,elapsedMs}=data;
- const misses=data.misses??0; // Compatibilidade com partidas iniciadas antes da atualização.
- if(![score,hits,shots,misses,bonusSec,elapsedMs].every(x=>Number.isSafeInteger(x)&&x>=0))return false;
- if(score!==hits*10||hits>shots||shots>1800||misses>shots-hits)return false;
- if(bonusSec<hits||bonusSec>hits*6)return false;
+ const misses=data.misses??0, escaped=data.escaped??0; // Aceita clientes anteriores.
+ if(![score,hits,shots,misses,escaped,bonusSec,elapsedMs].every(x=>Number.isSafeInteger(x)&&x>=0))return false;
+ if(score!==hits*SCORE_PER_CAR||hits>shots||shots>1800||misses>shots-hits)return false;
+ if(bonusSec<hits||bonusSec>hits*MAX_BONUS)return false;
  if(elapsedMs<(misses?1000:20000)||elapsedMs>MAX_RUN_MS+12000)return false;
- // O relógio começa em 120s, soma bônus e desconta 35s por erro confirmado.
- // O último erro pode zerar o relógio instantaneamente, até 35s antes da expiração natural.
- const remainingMs=120000+bonusSec*1000-misses*35000-elapsedMs;
- if(elapsedMs<MAX_RUN_MS-2500&&(remainingMs>4500||remainingMs<-(35000+4500)))return false;
+ // O intervalo mínimo entre novos carros limita o número de acertos e fugas possíveis.
+ const maxCars=Math.max(0,Math.floor((elapsedMs-FIRST_SPAWN*1000)/(MIN_SPAWN_GAP*1000))+1);
+ if(escaped>0&&hits+escaped>maxCars)return false;
+ const remainingMs=(BASE_TIME+bonusSec-misses*MISS_PENALTY-escaped*ESCAPE_PENALTY)*1000-elapsedMs;
+ // O último evento pode descontar uma Molotov ou a saída de vários carros no mesmo quadro.
+ const lastPenalty=misses||data.escaped===undefined?MISS_PENALTY:Math.min(escaped,CAR_LIMIT)*ESCAPE_PENALTY;
+ if(elapsedMs<MAX_RUN_MS-2500&&(remainingMs>4500||remainingMs<-(lastPenalty*1000+4500)))return false;
  return true;
 }
 function b64(buffer){return Buffer.from(buffer).toString('base64url');}
