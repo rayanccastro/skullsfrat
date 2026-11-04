@@ -3,13 +3,15 @@ import { resolve, relative, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import configFunction from '../api/config.js';
 import recruitmentFunction from '../api/recruitment.js';
+import luciferLeaderboard from '../api/lucifer-leaderboard.js';
 
 const publicDirectory=resolve(dirname(fileURLToPath(import.meta.url)),'../public');
-const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.ico':'image/x-icon'};
+const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon'};
 export async function localApp(request){
   const url=new URL(request.url);
   if(url.pathname==='/api/config')return configFunction.fetch(request);
   if(url.pathname==='/api/recruitment')return recruitmentFunction.fetch(request);
+  if(url.pathname==='/api/lucifer-leaderboard')return luciferLeaderboard.fetch(request);
   if(url.pathname.startsWith('/api/'))return Response.json({error:'Página não encontrada.'},{status:404});
   if(!['GET','HEAD'].includes(request.method))return new Response('Método não permitido.',{status:405,headers:{Allow:'GET, HEAD'}});
   let pathname;

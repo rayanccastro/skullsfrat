@@ -1,6 +1,7 @@
 import { acts, ceifadoraPrologue } from './lore.js';
 import { mountGrimoire } from './grimorio.js';
 import { mountGame } from './game.js';
+import { mountLuciferGame } from './lucifer-game.js';
 import { mountRecruitment } from './recruitment.js';
 import { mountAudio } from './audio.js';
 import { mountAtmosphere } from './atmosphere.js';
@@ -16,6 +17,7 @@ menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')
 navigation.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.setAttribute('aria-expanded','false');navigation.classList.remove('is-open');}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){menu.setAttribute('aria-expanded','false');navigation.classList.remove('is-open');}});
 try{mountGame(document.querySelector('#game-root'));}catch{document.querySelector('#game-root').textContent='Não foi possível iniciar o labirinto. Atualize a página para tentar novamente.';}
+mountLuciferGame(document.querySelector('#labirinto'));
 mountRecruitment(document.querySelector('#recruitment-root'));
 const audio=mountAudio();
 mountBackgroundVideo();

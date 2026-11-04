@@ -1,0 +1,60 @@
+/* SKULLS · LUCIFER ARCADE, escopo próprio para não tocar no labirinto */
+.lucifer-section{position:relative;background:radial-gradient(ellipse at 10% 12%,#8b161b24,transparent 48%),radial-gradient(ellipse at 88% 80%,#4a151724,transparent 53%),#0b090c;border-block:1px solid #502323;overflow:hidden}
+.lucifer-section::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.14;background:repeating-linear-gradient(90deg,transparent 0 82px,#bb363311 83px 85px)}
+.lucifer-section .shell{position:relative;z-index:1}
+.lucifer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:30px;margin-bottom:30px}
+.lucifer-head h2{font:600 clamp(37px,5vw,66px)/1.01 var(--serif,Georgia,serif);letter-spacing:-.03em;margin:0 0 16px}
+.lucifer-head h2 em{color:#ec4136}
+.lucifer-head p{color:#baaaa5;max-width:700px;margin:0;font-size:13px;line-height:1.85}
+.lucifer-sigil{font-size:clamp(64px,9vw,124px);line-height:1;color:#bd292e;text-shadow:0 0 24px #ff17274d;opacity:.68;transform:rotate(-12deg)}
+.lucifer-cabinet{background:#0b0b0e;border:1px solid #723634;box-shadow:0 12px 48px #0009,0 0 0 7px #171011,0 0 0 8px #342525;overflow:hidden}
+.lucifer-hud{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;align-items:center;background:linear-gradient(180deg,#200e11,#100d12);padding:14px 22px;border-bottom:2px solid #6e282b;gap:16px}
+.lucifer-hud>div{display:flex;gap:5px;flex-direction:column}
+.lucifer-hud span{color:#b09a98;font:700 9px var(--body,Arial,sans-serif);letter-spacing:.18em}
+.lucifer-hud strong{color:#f2e9dc;font:700 clamp(17px,2vw,28px) var(--condensed,Arial,sans-serif);letter-spacing:.03em;text-shadow:0 1px 4px #f541251b}
+.lucifer-hud .is-critical{color:#ff4848;animation:lucifer-heartbeat .7s infinite}
+@keyframes lucifer-heartbeat{50%{opacity:.45}}
+.lucifer-stage{position:relative;aspect-ratio:16/9;background:repeating-linear-gradient(0deg,#16111b 0 24px,#251a21 24px 48px);overflow:hidden}
+.lucifer-stage canvas{width:100%;height:100%;display:block;image-rendering:pixelated;touch-action:pan-y;outline-offset:-6px}
+.lucifer-notice{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:4;pointer-events:none;font:800 clamp(12px,1.8vw,24px) var(--condensed,Arial,sans-serif);letter-spacing:.12em;white-space:nowrap;color:#ffe293;text-shadow:0 2px 7px #000,0 0 12px #cb3414}
+.lucifer-overlay{position:absolute;inset:0;background:linear-gradient(120deg,#0b080ee9,#13090be6 56%,#0c080bea);display:grid;grid-template-columns:.75fr 1.25fr;align-items:center;gap:18px;padding:5%;border:1px solid #632629}
+.lucifer-overlay[hidden]{display:none}
+.lucifer-intro-art{position:relative;display:flex;justify-content:center;align-items:center;filter:drop-shadow(0 0 44px #e02c273e)}
+.lucifer-intro-art::before{content:'⛧';font-size:clamp(120px,22vw,240px);line-height:1;position:absolute;color:#d4262e39;text-shadow:0 0 25px #eb152e28}
+.lucifer-intro-art img{width:80%;max-height:320px;object-fit:contain;image-rendering:pixelated;position:relative}
+.lucifer-overlay-content{max-width:470px}
+.lucifer-eyebrow{color:#da473b;font:800 10px var(--body,Arial,sans-serif);letter-spacing:.26em}
+.lucifer-overlay h3{font:600 clamp(33px,4.4vw,55px)/1.04 var(--serif,Georgia,serif);margin:14px 0;color:#f3e9e0}
+.lucifer-overlay p{font:400 12px/1.85 var(--body,Arial,sans-serif);color:#c8b5ad;margin-bottom:22px}
+.lucifer-overlay form{display:grid;gap:10px}
+.lucifer-overlay label{font:800 10px var(--body,Arial,sans-serif);letter-spacing:.13em;color:#dfc4bf}
+.lucifer-overlay input{font-size:14px;border:1px solid #a73d36;background:#0a070b;min-height:49px;color:#fff;padding:12px 14px;width:100%;border-radius:0}
+.lucifer-overlay form button,.lucifer-result button{border:1px solid #bf3c36;background:linear-gradient(180deg,#aa2227,#5c1115);color:#ffede4;min-height:46px;padding:10px 18px;font:800 12px var(--body,Arial,sans-serif);letter-spacing:.06em;box-shadow:0 0 23px #c7262b33;transition:filter .2s,transform .2s}
+.lucifer-overlay form button:hover,.lucifer-result button:hover{filter:brightness(1.25)}
+.lucifer-result{display:grid;gap:10px}
+.lucifer-result[hidden]{display:none}
+.lucifer-result b{font:800 clamp(50px,7vw,100px)/1 var(--condensed,Arial,sans-serif);color:#ff3936;text-shadow:0 0 30px #bc1b2999}
+.lucifer-result span{font-size:11px;color:#d9bcb2}
+.lucifer-controls{background:#120e12;padding:12px 18px 15px;display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #3b282a}
+.lucifer-controls p{margin:0;font:600 10px/1.8 var(--body,Arial,sans-serif);color:#aa9998}
+.lucifer-controls p b{display:inline-block;border:1px solid #7b4e4d;padding:2px 7px;margin:0 7px;background:#251518;color:#f8dad6}
+.lucifer-dpad{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.lucifer-dpad button{background:#24171a;border:1px solid #93413c;color:#f0dbd5;min-width:42px;height:42px;font-size:20px;line-height:1}
+.lucifer-dpad .lucifer-throw{background:#842226;min-width:105px;font-size:11px;font-weight:800;padding-inline:9px}
+.lucifer-dpad button:active{background:#c33a37;transform:translateY(1px)}
+.lucifer-footer{padding:10px 17px;border-top:1px solid #392022;display:flex;justify-content:space-between;align-items:center;gap:20px;background:#110c0e}
+.lucifer-footer p{margin:0;color:#aa8d89;font:600 10px/1.6 var(--body,Arial,sans-serif)}
+.lucifer-footer button{border:0;background:none;color:#e3b2a8;font:800 10px var(--body,Arial,sans-serif);letter-spacing:.08em}
+.lucifer-ranking{margin-top:37px;display:grid;grid-template-columns:.85fr 1.5fr;gap:34px;align-items:start;background:linear-gradient(130deg,#2c101227,#07070830);border:1px solid #372224;padding:30px}
+.lucifer-ranking h3{font:500 38px/1.02 var(--serif,Georgia,serif);margin:0 0 14px}
+.lucifer-ranking p{font-size:11px;color:#aa9c99;line-height:1.75}
+.lucifer-ranking-table{min-width:0}
+.lucifer-ranking-row{padding:11px 15px;display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center;border-bottom:1px solid #423034;color:#d9c3be}
+.lucifer-ranking-row:first-child{background:#9e26251d;border:1px solid #903632}
+.lucifer-ranking-row>b{color:#e9443e;font-size:19px}
+.lucifer-ranking-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.lucifer-ranking-row strong{font:700 18px var(--condensed,Arial,sans-serif);color:#f2d7cb}
+.lucifer-ranking>button{grid-column:2;justify-self:end;border:1px solid #754340;background:none;color:#efc7c1;font:700 10px var(--body,Arial,sans-serif);padding:10px 16px}
+@media(max-width:880px){.lucifer-hud{padding:10px 12px;gap:8px}.lucifer-head .lucifer-sigil{display:none}.lucifer-overlay{padding:5% 4%}.lucifer-ranking{grid-template-columns:1fr;gap:10px}.lucifer-ranking>button{grid-column:1}}
+@media(max-width:610px){.lucifer-head h2{font-size:39px}.lucifer-head p{font-size:11px}.lucifer-cabinet{margin-inline:-11px}.lucifer-hud{grid-template-columns:repeat(4,1fr);gap:4px;padding:9px}.lucifer-hud strong{font-size:15px}.lucifer-hud span{font-size:7px}.lucifer-stage{aspect-ratio:16/9}.lucifer-stage canvas{height:100%;width:100%;object-fit:contain}.lucifer-overlay{grid-template-columns:1fr;padding:16px;overflow-y:auto;align-content:center}.lucifer-intro-art{display:none}.lucifer-overlay h3{font-size:33px;margin:9px 0}.lucifer-overlay p{font-size:10px;line-height:1.6;margin-bottom:9px}.lucifer-overlay form{gap:7px}.lucifer-overlay input{min-height:40px}.lucifer-overlay form button{min-height:42px;font-size:10px}.lucifer-controls{flex-direction:column;align-items:stretch}.lucifer-controls p{font-size:9px}.lucifer-dpad{justify-content:center}.lucifer-dpad button{flex:1;min-width:34px}.lucifer-dpad .lucifer-throw{flex:1.8}.lucifer-ranking{padding:19px}.lucifer-footer p{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.lucifer-hud .is-critical{animation:none}.lucifer-section *{scroll-behavior:auto}}
