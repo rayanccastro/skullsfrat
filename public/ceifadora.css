@@ -1,0 +1,48 @@
+/* Ceifadora / pergaminho — isolado para não alterar o restante do Skulls. */
+#historia.history{background:radial-gradient(ellipse at 94% 4%,rgba(108,17,20,.17),transparent 39%),radial-gradient(ellipse at 5% 90%,rgba(115,40,31,.09),transparent 42%),#0c0b0a}
+#historia .section-heading{max-width:780px;margin-bottom:34px}
+#historia .section-heading h2{line-height:1.08}
+#historia .section-heading p{max-width:610px}
+.ceifadora-prologue{position:relative;max-width:880px;margin:0 0 58px;padding:32px 36px 30px 40px;border-left:2px solid #9d312c;border-top:1px solid #9a5e574f;border-bottom:1px solid #9a5e574f;background:linear-gradient(115deg,#591c192e,#1412104d 47%,transparent);box-shadow:inset 16px 0 28px -28px #ff9e85}
+.ceifadora-prologue-mark{display:block;font:700 10px var(--body,sans-serif);letter-spacing:.26em;color:#ce6e63;margin-bottom:22px}
+.ceifadora-prologue p{font:500 clamp(19px,2vw,24px)/1.45 var(--serif,Georgia,serif);letter-spacing:.012em;color:#e6d6c3;margin:0 0 15px}
+.ceifadora-prologue p:last-child{margin-bottom:0}
+#historia .acts{border-top:1px solid #644037}
+#historia .ceifadora-chapter{border-bottom:1px solid #3a2e2a;scroll-margin-top:112px}
+#historia .ceifadora-chapter summary{transition:background .25s,padding .25s}
+#historia .ceifadora-chapter summary:hover{background:linear-gradient(90deg,#81232021,transparent 62%)}
+#historia .ceifadora-chapter summary .act-number{color:#b84940;text-shadow:0 0 16px #b41f1a2b}
+#historia .ceifadora-chapter[open] .act-heading h3{color:#f1b6a2}
+#historia .ceifadora-chapter .act-heading h3{line-height:1.2}
+#historia .ceifadora-chapter .act-toggle{transition:transform .4s}
+#historia .ceifadora-act-content{max-width:unset;padding:0 0 40px}
+.ceifadora-scroll{position:relative;isolation:isolate;overflow:hidden;max-width:980px;margin:14px auto 0;border:1px solid #86715b;background:#c9b89c;box-shadow:0 22px 50px #0006,0 0 0 6px #1a1512;color:#261e19}
+.ceifadora-scroll::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 10% 5%,#fff1d583,transparent 34%),radial-gradient(ellipse at 97% 87%,#72503638,transparent 44%),linear-gradient(102deg,#9c815954 0,transparent 7%,transparent 89%,#72553953 100%),repeating-linear-gradient(86deg,#5d463709 0 1px,transparent 1px 8px)}
+.ceifadora-scroll::after{content:'';position:absolute;inset:15px;border:1px solid #593b2a47;pointer-events:none;z-index:1}
+.ceifadora-scroll-copy{position:relative;padding:48px clamp(25px,6vw,78px) 40px;opacity:1}
+.ceifadora-scroll-caption{font:800 10px var(--condensed,sans-serif);letter-spacing:.27em;color:#833d33;padding-bottom:18px;margin-bottom:25px;border-bottom:1px solid #5b3c2c73}
+.ceifadora-scroll h4{margin:0 0 30px;font:500 clamp(30px,3.6vw,43px)/1.06 var(--serif,Georgia,serif);letter-spacing:-.025em;color:#38251d;max-width:670px}
+.ceifadora-scroll-copy p{font:500 clamp(17px,1.8vw,20px)/1.52 var(--serif,Georgia,serif);color:#32261e;margin:0 0 22px}
+.ceifadora-scroll-copy .ceifadora-quote{font-size:clamp(20px,2.25vw,27px);font-style:italic;color:#762d2a;text-align:center;margin:29px 8px;padding:19px clamp(8px,2.3vw,27px);border-block:1px solid #8a634c77}
+.ceifadora-scroll-copy .ceifadora-oath{padding:10px 18px;border-left:2px solid #96543f;background:linear-gradient(90deg,#aa6b4720,transparent)}
+.ceifadora-scroll-copy .ceifadora-laws-title{font:700 14px var(--condensed,sans-serif);letter-spacing:.2em;color:#8e3027;margin:27px 0}
+.ceifadora-scroll-fin{font:700 10px var(--condensed,sans-serif);letter-spacing:.3em;text-align:center;color:#965542;margin-top:35px;padding-top:27px;border-top:1px solid #8b6d4f80}
+.ceifadora-paper{display:none;position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 25% 12%,#efdebd99,transparent 52%),radial-gradient(ellipse at 80% 83%,#8b624b3d,transparent 48%),repeating-linear-gradient(93deg,#61473310 0 1px,transparent 1px 7px),#c9b89c;box-shadow:inset 0 0 55px #533a2f6b}
+.ceifadora-paper::before{content:'✦   O ÚLTIMO VÉU   ✦';position:absolute;top:78px;left:0;right:0;text-align:center;font:500 clamp(18px,3vw,30px) var(--serif,Georgia,serif);letter-spacing:.26em;color:#5c352d73}
+.ceifadora-paper-upper{clip-path:polygon(0 0,100% 0,100% 132px,0 190px)}
+.ceifadora-paper-lower{clip-path:polygon(0 190px,100% 132px,100% 100%,0 100%)}
+.ceifadora-slash{display:none;position:absolute;top:187px;left:-8%;width:119%;height:2px;transform:rotate(-3.6deg) scaleX(0);transform-origin:left center;background:linear-gradient(90deg,transparent,#eddfb2 6%,#f9f4df 56%,#a3442c 83%,transparent);box-shadow:0 0 9px #dcae74,0 0 22px #9f2b20;z-index:6;pointer-events:none}
+.ceifadora-scythe{display:none;position:absolute;z-index:7;top:8px;left:-180px;width:clamp(150px,20vw,215px);height:auto;pointer-events:none;filter:drop-shadow(6px 12px 8px #19090680)}
+.ceifadora-scythe svg{display:block;width:100%;height:auto;overflow:visible}
+.ceifadora-revealing .ceifadora-scroll-copy{animation:ceifadora-ink-reveal 1.6s ease both}
+.ceifadora-revealing .ceifadora-paper-upper{display:block;animation:ceifadora-tear-top 1.35s cubic-bezier(.4,.03,.15,1) forwards}
+.ceifadora-revealing .ceifadora-paper-lower{display:block;animation:ceifadora-tear-bottom 1.35s cubic-bezier(.4,.03,.15,1) forwards}
+.ceifadora-revealing .ceifadora-slash{display:block;animation:ceifadora-cut-glow 1.15s ease-in-out both}
+.ceifadora-revealing .ceifadora-scythe{display:block;animation:ceifadora-scythe-sweep 1.15s cubic-bezier(.34,.02,.37,.99) both}
+@keyframes ceifadora-scythe-sweep{0%{left:-165px;transform:translateY(-70px) rotate(-50deg);opacity:0}12%{opacity:1}42%{transform:translateY(8px) rotate(5deg)}73%{opacity:1}100%{left:calc(100% + 65px);transform:translateY(-42px) rotate(33deg);opacity:0}}
+@keyframes ceifadora-cut-glow{0%,13%{opacity:0;transform:rotate(-3.6deg) scaleX(0)}65%{opacity:1;transform:rotate(-3.6deg) scaleX(1)}100%{opacity:0;transform:rotate(-3.6deg) scaleX(1)}}
+@keyframes ceifadora-tear-top{0%,48%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translate(-18px,-105px) rotate(-3deg)}}
+@keyframes ceifadora-tear-bottom{0%,48%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translate(20px,105px) rotate(2deg)}}
+@keyframes ceifadora-ink-reveal{0%,52%{opacity:0;filter:blur(3px)}100%{opacity:1;filter:blur(0)}}
+@media(max-width:760px){.ceifadora-prologue{padding:25px 21px;margin-bottom:35px}.ceifadora-prologue p{font-size:20px}#historia .ceifadora-act-content{padding-bottom:31px}.ceifadora-scroll-copy{padding:32px 21px 34px}.ceifadora-scroll::after{inset:8px}.ceifadora-scroll-copy p{font-size:19px}.ceifadora-scroll h4{font-size:30px}.ceifadora-scroll-caption{letter-spacing:.15em;font-size:9px}.ceifadora-paper-upper{clip-path:polygon(0 0,100% 0,100% 116px,0 170px)}.ceifadora-paper-lower{clip-path:polygon(0 170px,100% 116px,100% 100%,0 100%)}.ceifadora-slash{top:166px;transform:rotate(-8deg) scaleX(0)}.ceifadora-paper::before{top:62px;letter-spacing:.14em}}
+@media(prefers-reduced-motion:reduce){.ceifadora-revealing .ceifadora-scroll-copy{animation:none!important;opacity:1!important;filter:none!important}.ceifadora-revealing .ceifadora-paper,.ceifadora-revealing .ceifadora-slash,.ceifadora-revealing .ceifadora-scythe{display:none!important;animation:none!important}}

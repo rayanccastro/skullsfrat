@@ -1,52 +1,88 @@
+/** Grimório dos Skulls — A Ceifadora: narrativa canônica em seis capítulos. */
+export const ceifadoraPrologue = [
+  "Antes que os homens aprendessem a temer a morte, antes que os primeiros cemitérios fossem construídos e antes que qualquer alma pronunciasse uma oração, Ela já existia.",
+  "Não nasceu de um ventre. Não foi criada por mãos divinas. Não recebeu seu poder de nenhum outro deus. A Ceifadora simplesmente sempre esteve lá.",
+  "Ela é aquela que observa o último suspiro, que recolhe os nomes esquecidos e que acompanha as almas até o lugar ao qual pertencem. Não é boa. Não é má. Não é justa segundo as leis dos homens. Ela é necessária. Pois onde existe vida, existe morte. E onde existe morte, existe uma passagem."
+];
 export const acts = [
   {
-    roman: 'I',
-    title: 'Os Skulls e suas novas crenças',
-    teaser: 'Da revolta nasceu uma irmandade. Nas sombras, os que nunca se encaixaram encontraram uma família.',
-    paragraphs: [
-      'Há uma galera que anda pelas sombras da cidade e do campus. Não fala muito, não se mistura com qualquer um, mas todo mundo já ouviu falar: Skulls. A irmandade nasceu da revolta de jovens que se cansaram de seguir regras e abaixar a cabeça para um sistema que não fazia sentido. Uniram-se pelo som pesado, pelo grito do metal e pelo desconforto de nunca se encaixar. Alguns dizem que se inspiraram em figuras do passado, gente que abandonou a fé imposta para viver livre, mesmo que isso custasse tudo.',
-      'Os Skulls não tentam parecer normais. Vestem preto da cabeça aos pés, tatuam símbolos que muita gente não entende e caminham como se carregassem uma tempestade dentro do peito. Cada membro tem sua história, seu caos e suas culpas. Todos compartilham o desejo de viver intensamente, sem pedir desculpas por serem quem são.',
-      'Muitos confundem a irmandade com algo satânico, oculto ou perigoso. Para os Skulls, Satanás representa resistência: a figura que se levanta contra o que é imposto. É sobre não se ajoelhar para ninguém e encontrar beleza no que o mundo considera feio, errado ou estranho.',
-      'A irmandade é fechada. Para entrar, não adianta forçar: eles percebem quem é real e quem já sentiu na pele o peso de não pertencer. Quando acolhem alguém, essa pessoa se torna família. Lá dentro, ninguém julga ninguém. O que outros chamam de pecado é parte da condição humana; cada um aprende a conviver com os próprios demônios. “Pecar é viver” é a verdade que compartilham, sem vergonha.',
-      'Caveiras e cobras carregam essa identidade. A caveira lembra o que todos somos por baixo da pele; a cobra representa os instintos que a sociedade manda esconder. Do lado de fora, surgem histórias sobre pactos e maldições contra quem cruza seu caminho. A maioria é exagero, mas há coisas que ninguém sabe ao certo. Os Skulls não fazem questão de explicar. Não querem atenção, não fazem propaganda e vivem nas sombras.',
-      'Os Skulls são para quem se cansou de agradar, abraça o próprio caos e transforma dor em força. Vivem nas beiradas, entre o sagrado e o profano. Quem se sente estranho demais para o mundo talvez um dia seja encontrado por eles. E, se for aceito, talvez descubra ali, entre o barulho e o silêncio, um lugar para chamar de casa.'
+    "roman": "I",
+    "title": "A origem — Aquela que nasceu antes do fim",
+    "teaser": "Antes do primeiro cemitério, a Senhora da Passagem já guardava o caminho das almas.",
+    "paragraphs": [
+      "Diz a antiga tradição que, no princípio, existiam apenas dois planos: o mundo dos vivos e o vazio absoluto. As almas que deixavam seus corpos não encontravam descanso. Permaneciam presas entre os dois mundos, vagando sem direção, algumas consumidas pelo medo, outras pela própria raiva. O acúmulo dessas almas começou a enfraquecer a fronteira que separava a existência do esquecimento.",
+      "Foi então que surgiu Ela. Não para destruir as almas, mas para conduzi-las. A Ceifadora tornou-se a primeira guardiã da passagem, aquela que recebeu a responsabilidade de manter o equilíbrio entre aquilo que vive e aquilo que já partiu.",
+      "Sua foice não foi criada para matar. Foi criada para cortar os laços que impedem uma alma de seguir seu caminho. Seu manto representa o desconhecido. Sua coroa representa a autoridade sobre o fim. Sua foice representa a sentença inevitável. E seus olhos representam tudo aquilo que os vivos não conseguem enxergar.",
+      "Com o passar das eras, recebeu muitos nomes: A Senhora do Último Suspiro; A Rainha do Véu; A Guardiã das Almas Perdidas; Aquela que Caminha Entre Mundos; A Primeira e a Última.",
+      "Mas, entre aqueles que conhecem seus mistérios, um nome permanece acima de todos: A Ceifadora."
     ]
   },
   {
-    roman: 'II',
-    title: 'Possessões e demônios',
-    teaser: 'O desejo de compreender o oculto ultrapassou os limites do conhecimento. Algo respondeu.',
-    paragraphs: [
-      'As novas crenças trouxeram dúvidas e uma busca por conhecimento. Os membros dos Skulls começaram a investigar seus novos dogmas, procurando compreender o obscuro do ocultismo e, principalmente, o poder que poderia vir com ele.',
-      'Organizaram sessões de culto e estudo em conjunto. Compartilhavam tudo o que recolhiam: manuscritos, relatos de aparições e tentativas de contato. Um dos membros, porém, passou a perseguir esse conhecimento de maneira obsessiva. Seu comportamento se afastou da personalidade que os outros conheciam, tomado por uma soberba que parecia estar acima de um mero mortal.',
-      'Vieram mudanças nas vestes e nos modos. Depois, alterações físicas nos olhos e, por fim, na voz indicaram uma possessão. Durante semanas, a irmandade se dedicou a trazer esse membro de volta. Estudaram seus comportamentos, interagiram e fizeram perguntas, recorrendo a tudo o que estava ao seu alcance para recuperar sua sanidade e devolver alguma normalidade aos Skulls.'
+    "roman": "II",
+    "title": "O primeiro contato — O pacto com os Skulls",
+    "teaser": "Uma mulher encapuzada surgiu nos sonhos da irmandade. Não foi invocada: escolheu se revelar.",
+    "paragraphs": [
+      "Os Skulls não foram os primeiros a conhecer seu nome, mas talvez tenham sido os primeiros a compreender o verdadeiro significado de sua existência. A história conta que, em um período de grande instabilidade, quando a irmandade enfrentava perdas, traições e ameaças que pareciam ultrapassar a compreensão humana, algo começou a acontecer.",
+      "Os membros passaram a relatar sonhos semelhantes. Uma mulher encapuzada aparecia em lugares diferentes, sempre acompanhada pelo som de uma lâmina arrastando lentamente sobre o chão. Ela nunca falava. Apenas observava.",
+      "Em um desses sonhos, um dos primeiros líderes dos Skulls encontrou-se diante de um enorme portão negro. Do outro lado, podia ouvir vozes de pessoas que já haviam partido. A mulher estava ali. Dessa vez, ela falou:",
+      "“Vocês carregam a morte em seus símbolos, mas ainda não compreenderam o peso de carregá-la em seus juramentos.”",
+      "O líder perguntou quem ela era. E recebeu uma resposta: “Sou aquela que permanece quando todos abandonam. Sou a última testemunha de cada vida. Sou o fim que ninguém pode negociar.”",
+      "Na manhã seguinte, os relatos foram compartilhados. Foi então que os Skulls compreenderam que não estavam diante de uma simples manifestação sobrenatural. Estavam diante da própria Senhora da Morte.",
+      "O primeiro contato não aconteceu por meio de uma invocação, mas de um chamado. A Ceifadora havia escolhido se revelar. Ela enxergou nos Skulls algo que não encontrava havia séculos: uma irmandade que, apesar de suas contradições, compreendia o valor dos laços, da lealdade, dos sacrifícios e da permanência.",
+      "Assim começou a relação entre a entidade e a irmandade. Não como servos e senhora, mas como guardiã e aqueles que aceitariam carregar parte de seu legado."
     ]
   },
   {
-    roman: 'III',
-    title: 'Exorcismo e a chegada de Lúcifer',
-    teaser: 'Eles procuravam libertar um dos seus. O ritual deixou uma perda e uma presença que não conseguiram destruir.',
-    paragraphs: [
-      'Um exorcismo nunca estivera nos planos da irmandade. Nem sequer haviam considerado uma possessão que não tivesse a intenção de causar o mal. Embora praticassem o ocultismo e lidassem com diversas entidades diariamente, faltava-lhes o conhecimento necessário para libertar alguém querido de um demônio ligado aos sete anéis infernais sem colocar sua vida em risco.',
-      'A compreensão dos sete pecados ainda era construída dia após dia, por meio das experiências pessoais de cada membro, acompanhado de sua víbora. Muitos não conseguiam aceitar suas maiores culpas e desistiram da caminhada pelas sombras. Permaneceram apenas aqueles que realmente se encontraram no obscuro.',
-      'Certo dia, conseguiram contato com o que ainda restava do membro possuído e obtiveram o ritual necessário para libertá-lo. Os que permaneciam reuniram os materiais e se prepararam para exorcizar a entidade, agora conhecida como Lúcifer. Conseguiram uma alma e um corpo para a transferência. Com a energia de todos, realizaram o sacrifício de uma alma pura e transferiram a presença demoníaca para um pequeno corpo, que também seria sacrificado.',
-      'Mas o ritual falhou. O membro exorcizado desmaiou, precisou ser socorrido e perdeu um de seus olhos. O ser que deveria ser sacrificado ganhou vida e se tornou algo que os Skulls não conseguiram matar.'
+    "roman": "III",
+    "title": "A Guardiã do Véu — O limite entre os mundos",
+    "teaser": "Entre a vida e a morte existe uma fronteira que não pode ser rompida impunemente.",
+    "paragraphs": [
+      "Entre todos os seus domínios, nenhum é mais importante do que o Véu. O Véu é a fronteira invisível que separa o mundo dos vivos do mundo dos mortos. Não é uma parede física, nem um portal que pode ser aberto por qualquer pessoa. É uma estrutura espiritual que mantém cada existência em seu devido lugar.",
+      "Quando o Véu está forte, os mortos descansam, os vivos seguem seus caminhos e o equilíbrio permanece. Mas quando é enfraquecido, coisas terríveis podem acontecer: almas podem retornar sem encontrar seus corpos, entidades podem atravessar sem serem convidadas, espíritos podem se alimentar das lembranças dos vivos e criaturas antigas podem encontrar passagem para este mundo.",
+      "É por isso que a Ceifadora existe. Ela não governa apenas os mortos. Ela protege a fronteira que impede que os dois mundos se destruam. Sua função é vigiar, reparar e, quando necessário, selar as rupturas.",
+      "A Ceifadora não permite que a morte seja transformada em prisão, nem que a vida seja invadida por aquilo que deveria permanecer além dela. E é justamente nesse dever que os Skulls encontram seu lugar."
     ]
   },
   {
-    roman: 'IV',
-    title: 'A volta da Ceifadora e o castigo',
-    teaser: 'A mãe esquecida ouviu as súplicas de seus filhos. Seu retorno não trouxe um perdão sem preço.',
-    paragraphs: [
-      'Durante anos, o nome de uma Deusa foi sussurrado apenas pelo vento. A Ceifadora, Deusa da morte, da noite e do último ciclo, havia sido esquecida quando seus devotos e filhos precisaram fugir de uma cidade em ruínas, consumida pela decadência e pela perda da fé.',
-      'Acolhidos em uma nova cidade, esses devotos tentaram sobreviver adotando outros caminhos. Passaram a seguir demônios ligados ao satanismo, acreditando que encontrariam proteção e um novo rumo. Mas o esquecimento teve um preço: a ausência da Ceifadora deixou um vazio, e o ciclo natural da morte e do renascimento foi quebrado.',
-      'Com o tempo, os sinais começaram a aparecer. Noites mais longas, sombras inquietas e sonhos marcados por foices se misturavam às memórias de céus verdes, cobertos por nuvens negras que anunciavam tempestades. Os antigos devotos compreenderam, então, o erro de terem abandonado sua mãe.',
-      'Arrependidos, voltaram-se novamente para a Deusa Ceifadora. Reergueram os rituais antigos e retomaram os sacrifícios, entendidos por eles como pedidos de perdão e submissão. A Deusa esquecida despertou, reclamou seu lugar no mundo e lembrou a todos que nenhum ciclo termina sem que ela seja invocada.',
-      'A Ceifadora reapareceu diante de seus filhos em um momento de ganância mortal, com sua forma ancestral e a voz cheia de morte. Todos se ajoelharam, arrependidos, e suplicaram por perdão. Mas tudo o que a Deusa dá, ela também tira. Uma a uma, removeu suas víboras e deixou seus filhos ingratos sem essência, para que sentissem a dor e o sofrimento do esquecimento que ela própria havia suportado.'
+    "roman": "IV",
+    "title": "O papel dos Skulls — Os guardiões escolhidos",
+    "teaser": "Quatro juramentos mantêm vivos os ensinamentos da Senhora do Último Véu.",
+    "paragraphs": [
+      "A Ceifadora não escolheu os Skulls para serem seus donos, tampouco para controlarem a morte. Escolheu-os para serem seus representantes no mundo dos vivos. Os Skulls são aqueles que carregam sua história, preservam seus ensinamentos e protegem os limites de seu domínio.",
+      "Cada membro que aceita seu nome passa a reconhecer que existe algo maior do que sua própria existência. Seu papel pode ser dividido em quatro juramentos fundamentais:",
+      "1. Os Vigias do Véu: Observar sinais de enfraquecimento da fronteira entre os mundos. Reconhecer manifestações e impedir que forças externas ameacem o equilíbrio.",
+      "2. Os Portadores da Palavra: Preservar os ensinamentos da Ceifadora, transmitir seus rituais e garantir que sua verdadeira história não seja esquecida.",
+      "3. Os Protetores da Passagem: Respeitar os mortos, impedir que almas sejam aprisionadas e jamais utilizar os mistérios da morte por mera vaidade ou crueldade.",
+      "4. Os Juramentados: Manter a irmandade unida, pois a lealdade é a principal representação de seu legado entre os vivos.",
+      "A Ceifadora não promete imortalidade aos Skulls. Não promete que seus membros jamais sofrerão. Não promete que seus inimigos serão destruídos. Ela oferece algo muito mais antigo: proteção espiritual, conhecimento e a certeza de que aqueles que caminham sob seu símbolo jamais estarão completamente esquecidos."
+    ]
+  },
+  {
+    "roman": "V",
+    "title": "A Ceifadora e os líderes — A coroa pertence a Ela",
+    "teaser": "Nenhum líder, fundador ou veterano está acima da Ceifadora.",
+    "paragraphs": [
+      "Existe uma particularidade na relação entre a entidade e os líderes dos Skulls. A liderança não representa apenas autoridade dentro da irmandade. Representa também responsabilidade espiritual.",
+      "Os líderes são considerados os principais interlocutores da Ceifadora, responsáveis por preservar os juramentos e conduzir os rituais mais importantes.",
+      "Entretanto, existe uma regra que jamais deve ser quebrada: Nenhum líder está acima da Ceifadora. Nem mesmo aquele que fundou a irmandade, nem aquele que carrega seu símbolo há mais tempo. A coroa pertence a Ela. Os líderes são apenas aqueles que receberam a responsabilidade de mantê-la presente entre os vivos.",
+      "E dizem os antigos ensinamentos que, quando um líder deixa de proteger seus irmãos, abandona seus juramentos ou utiliza o nome da Ceifadora para satisfazer sua própria ambição, seu vínculo com Ela começa a desaparecer.",
+      "A Ceifadora não precisa de um trono. Ela precisa que seus juramentos sejam respeitados."
+    ]
+  },
+  {
+    "roman": "VI",
+    "title": "A grande verdade — As três leis sagradas",
+    "teaser": "A morte não se escraviza. O Véu não se profana. A irmandade não abandona os seus.",
+    "paragraphs": [
+      "A Ceifadora não é uma divindade que simplesmente obedece aos seus adoradores; Ela possui vontade própria. Pode discordar dos líderes, negar pedidos, testar a lealdade dos membros e até abandonar temporariamente aqueles que desrespeitarem seus princípios.",
+      "AS TRÊS LEIS SAGRADAS",
+      "1. A morte não pode ser escravizada: Nenhum Skull tem autoridade para exigir que uma alma retorne ou permaneça.",
+      "2. O Véu não pode ser profanado: Qualquer tentativa de abrir passagem por ambição ou poder terá consequências.",
+      "3. A irmandade não abandona os seus: A lealdade entre os Skulls é o reflexo terreno da proteção que a Ceifadora representa.",
+      "“Não sou aquela que vocês devem temer quando a vida termina. Sou aquela que devem respeitar enquanto ainda possuem vida.”"
     ]
   }
 ];
-
 export const manifesto = {
   title: 'Pecar é viver.',
   text: 'Uma família para quem nunca se encaixou. Entre o sagrado e o profano, os Skulls abraçam o próprio caos e transformam dor em força.',
