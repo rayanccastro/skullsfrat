@@ -14,13 +14,15 @@ export function nickname(name) {
 }
 export function validRun(data){
  const {score,hits,shots,bonusSec,elapsedMs}=data;
- if(![score,hits,shots,bonusSec,elapsedMs].every(x=>Number.isSafeInteger(x)&&x>=0))return false;
- if(score!==hits*10||hits>shots||shots>1800)return false;
+ const misses=data.misses??0; // Compatibilidade com partidas iniciadas antes da atualização.
+ if(![score,hits,shots,misses,bonusSec,elapsedMs].every(x=>Number.isSafeInteger(x)&&x>=0))return false;
+ if(score!==hits*10||hits>shots||shots>1800||misses>shots-hits)return false;
  if(bonusSec<hits||bonusSec>hits*6)return false;
- if(elapsedMs<20000||elapsedMs>MAX_RUN_MS+12000)return false;
- // A partida termina quando o relógio chega a zero ou depois de 15 minutos por segurança.
- const expected=120000+bonusSec*1000;
- if(elapsedMs<MAX_RUN_MS-2500&&Math.abs(elapsedMs-expected)>4500)return false;
+ if(elapsedMs<(misses?1000:20000)||elapsedMs>MAX_RUN_MS+12000)return false;
+ // O relógio começa em 120s, soma bônus e desconta 35s por erro confirmado.
+ // O último erro pode zerar o relógio instantaneamente, até 35s antes da expiração natural.
+ const remainingMs=120000+bonusSec*1000-misses*35000-elapsedMs;
+ if(elapsedMs<MAX_RUN_MS-2500&&(remainingMs>4500||remainingMs<-(35000+4500)))return false;
  return true;
 }
 function b64(buffer){return Buffer.from(buffer).toString('base64url');}
@@ -86,7 +88,7 @@ export async function luciferLeaderboard(request,env=process.env){
   const name=nickname(data.name);
   if(!run||!name||run.name!==name||typeof run.created!=='number'||typeof run.id!=='string')return json({error:'Partida inválida'},400);
   const wallTime=Date.now()-run.created;
-  if(wallTime<18000||wallTime>MAX_RUN_MS+30000)return json({error:'Tempo inválido'},400);
+  if(wallTime<1000||wallTime>MAX_RUN_MS+30000)return json({error:'Tempo inválido'},400);
   if(!validRun(data)||Math.abs(wallTime-data.elapsedMs)>30000)return json({error:'Pontuação inválida'},400);
   try{
    const [record]=await redis(env,[['GETDEL',SESSION_PREFIX+run.id]]);

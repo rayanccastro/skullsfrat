@@ -136,3 +136,8 @@
  .lucifer-obscury-bubble{animation:none}
  .lucifer-ranking-floating{transition:none}
 }
+
+/* Penalidade por Molotov errada: aviso vermelho de perda de tempo. */
+.lucifer-notice.is-penalty{color:#ff6363;text-shadow:0 2px 7px #000,0 0 18px #c61123,0 0 6px #000;animation:lucifer-miss-pulse .3s ease-out 2}
+@keyframes lucifer-miss-pulse{50%{transform:translateX(-50%) scale(1.09)}}
+@media(prefers-reduced-motion:reduce){.lucifer-notice.is-penalty{animation:none}}

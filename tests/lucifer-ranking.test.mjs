@@ -52,3 +52,16 @@ test('sessão com Redis simulado grava e recupera ranking sem permitir reenvio',
   const list=await luciferLeaderboard(new Request(origin),env);assert.deepEqual((await list.json()).entries,[{name:'Lucifer',score:0}]);
  }finally{globalThis.fetch=oldFetch;Date.now=oldNow;}
 });
+
+test('erro da Molotov desconta 35 segundos do tempo e preserva bônus',()=>{
+ // 1 erro: a partida termina em 85s; 3 erros: termina em 15s.
+ assert.equal(validRun({score:0,hits:0,shots:1,misses:1,bonusSec:0,elapsedMs:85000}),true);
+ assert.equal(validRun({score:0,hits:0,shots:3,misses:3,bonusSec:0,elapsedMs:15000}),true);
+ // 4º erro pode zerar os 120 segundos imediatamente, sem esperar 20 segundos.
+ assert.equal(validRun({score:0,hits:0,shots:4,misses:4,bonusSec:0,elapsedMs:2000}),true);
+ assert.equal(validRun({score:10,hits:1,shots:2,misses:1,bonusSec:1,elapsedMs:86000}),true);
+ // Não aceita término precoce sem a penalidade real, nem erros impossíveis.
+ assert.equal(validRun({score:0,hits:0,shots:1,misses:1,bonusSec:0,elapsedMs:10000}),false);
+ assert.equal(validRun({score:0,hits:0,shots:1,misses:2,bonusSec:0,elapsedMs:50000}),false);
+ assert.equal(validRun({score:0,hits:0,shots:4,misses:4,bonusSec:0,elapsedMs:80000}),false);
+});

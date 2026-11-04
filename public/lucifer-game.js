@@ -7,7 +7,7 @@ const CAR_NAMES = [
  'Obscury','Sparks','Envy','Blacklist','Fawn',
  'Shroom','Pearls','Obsession','The Roses','Underground'
 ];
-const BASE_TIME = 120, MAX_BONUS = 6, SCORE_PER_CAR = 10;
+const BASE_TIME = 120, MAX_BONUS = 6, SCORE_PER_CAR = 10, MISS_PENALTY = 35;
 const WIDTH = 960, HEIGHT = 540, STORAGE_KEY = 'skulls-lucifer-ranking-v1';
 const START_URL = '/api/lucifer-leaderboard';
 const $ = (root, selector) => root.querySelector(selector);
@@ -40,14 +40,14 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
       <div class="lucifer-notice" data-l-notice aria-live="polite"></div>
       <div class="lucifer-overlay" data-l-overlay>
        <div class="lucifer-intro-art"><img src="/assets/lucifer-sprite.png" alt="Lucifer: pequeno bode escuro de olhos vermelhos e pentagrama na testa"></div>
-       <div class="lucifer-overlay-content"><span class="lucifer-eyebrow">◆ SISTEMA SKULLS ◆</span><h3 data-l-title>O bode está pronto.</h3><p data-l-message>Registre seu nome para entrar no placar. Use as setas para mirar e ESPAÇO para lançar. Cada carro vale 10 pontos; acertos em sequência dão até 6 segundos extras por alvo.</p>
+       <div class="lucifer-overlay-content"><span class="lucifer-eyebrow">◆ SISTEMA SKULLS ◆</span><h3 data-l-title>O bode está pronto.</h3><p data-l-message>Registre seu nome para entrar no placar. Use as setas para mirar e ESPAÇO para lançar. Cada carro vale 10 pontos; acertos em sequência dão até 6 segundos extras por alvo. Cada Molotov que errar retira 35 segundos do seu tempo.</p>
         <form data-l-form autocomplete="off"><label for="lucifer-player-name">NOME DO JOGADOR</label><input id="lucifer-player-name" name="player" maxlength="24" minlength="2" placeholder="Digite seu nome" required><button type="submit">COMEÇAR PARTIDA <span aria-hidden="true">↗</span></button></form>
         <div class="lucifer-result" data-l-result hidden><b data-l-final>0</b><span data-l-final-text>pontos</span><button type="button" data-l-again>JOGAR NOVAMENTE ↗</button></div>
        </div>
       </div>
     </div>
     <div class="lucifer-controls"><p><b>↑ ↓ ← →</b> Mover a mira <b>ESPAÇO</b> Lançar a Molotov</p><div class="lucifer-dpad" aria-label="Controles para celular"><button type="button" data-l-dir="up" aria-label="Mirar para cima">↑</button><button type="button" data-l-dir="left" aria-label="Mirar para esquerda">←</button><button type="button" data-l-dir="down" aria-label="Mirar para baixo">↓</button><button type="button" data-l-dir="right" aria-label="Mirar para direita">→</button><button type="button" class="lucifer-throw" data-l-throw aria-label="Lançar a Molotov">LANÇAR ⛧</button></div></div>
-    <div class="lucifer-footer"><p>20 carros das fraternidades • 10 pontos por acerto • bônus até +6s por acerto</p><button type="button" data-l-reset>REINICIAR</button></div>
+    <div class="lucifer-footer"><p>20 carros das fraternidades • 10 pontos por acerto • bônus até +6s • erro: −35s</p><button type="button" data-l-reset>REINICIAR</button></div>
   </div>
   <div class="lucifer-ranking"><div><span class="section-kicker">OS NOMES QUE SOBREVIVERAM</span><h3>Ranking dos Skulls</h3><p data-l-ranking-status>Carregando o placar…</p></div><div class="lucifer-ranking-table" data-l-ranking><p>Buscando jogadores…</p></div><button type="button" data-l-refresh>ATUALIZAR RANKING</button></div>
  </div>`;
@@ -94,7 +94,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   const image=new Image();image.src=url;images[key]=image;
  }
  const keys={left:false,right:false,up:false,down:false};
- let phase='welcome',player='',runToken=null,ranked=false,score=0,hits=0,shots=0,combo=0,extraTime=0;
+ let phase='welcome',player='',runToken=null,ranked=false,score=0,hits=0,shots=0,misses=0,combo=0,extraTime=0;
  let remaining=BASE_TIME,aim={x:WIDTH/2,y:205},cars=[],shotsInFlight=[],particles=[],effects=[], last=0,raf=0,elapsed=0,spawnClock=0,shotCooldown=0;
  let messageEnd=0,touchStart=null,remoteRanking=false,carBag=[],easterTimer=0;
  function showObscuryEgg(x,y){
@@ -111,7 +111,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  const groundLines=[158,248,339],scenePattern=(x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,w,h);};
  function canPlay(){return phase==='playing';}
- function showNotice(message,seconds=1.25){messageEnd=performance.now()+seconds*1000;$(section,'[data-l-notice]').textContent=message;}
+ function showNotice(message,seconds=1.25,penalty=false){messageEnd=performance.now()+seconds*1000;const notice=$(section,'[data-l-notice]');notice.textContent=message;notice.classList.toggle('is-penalty',penalty);}
  function updateHUD(){
   $(section,'[data-l-player]').textContent=player||'SEM REGISTRO';
   $(section,'[data-l-score]').textContent=String(score).padStart(4,'0');
@@ -219,7 +219,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
    hits++;combo++;score+=SCORE_PER_CAR;
    const bonus=Math.min(MAX_BONUS,combo);remaining+=bonus;extraTime+=bonus;
    makeExplosion(target.x,target.y,true);if(target.index===CAR_NAMES.indexOf('Obscury'))showObscuryEgg(target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
-  }else{combo=0;makeExplosion(projectile.tx,projectile.ty,false);showNotice('ERROU! COMBO ZERADO',.7);}
+  }else{misses++;combo=0;remaining=Math.max(0,remaining-MISS_PENALTY);makeExplosion(projectile.tx,projectile.ty,false);showNotice(`ERROU A MOLOTOV!  −${MISS_PENALTY}s`,1.35,true);}
   updateHUD();
  }
  function renderParticles(dt){
@@ -272,7 +272,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  function showIntro(){
   overlay.hidden=false;$(section,'[data-l-title]').textContent='O bode está pronto.';
-  $(section,'[data-l-message]').textContent='Registre seu nome para entrar no placar. Mire nos carros com as setas e lance com ESPAÇO. Cada carro vale 10 pontos; combos concedem até +6 segundos por acerto.';
+  $(section,'[data-l-message]').textContent='Registre seu nome para entrar no placar. Mire nos carros com as setas e lance com ESPAÇO. Cada carro vale 10 pontos; combos concedem até +6 segundos por acerto. Errou a Molotov? Você perde 35 segundos.';
   form.hidden=false;$(section,'[data-l-result]').hidden=true;updateHUD();
  }
  async function start(){
@@ -286,7 +286,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
    ranked=!!(session.ok&&session.token);runToken=ranked?session.token:null;
   }catch{ranked=false;runToken=null;}
   btn.disabled=false;btn.textContent='COMEÇAR PARTIDA ↗';
-  phase='playing';score=0;hits=0;shots=0;combo=0;extraTime=0;remaining=BASE_TIME;elapsed=0;spawnClock=.35;shotCooldown=0;
+  phase='playing';score=0;hits=0;shots=0;misses=0;combo=0;extraTime=0;remaining=BASE_TIME;elapsed=0;spawnClock=.35;shotCooldown=0;
   aim={x:WIDTH/2,y:230};cars=[];shotsInFlight=[];effects=[];particles=[];carBag=[];last=performance.now();
   overlay.hidden=true;updateHUD();canvas.focus({preventScroll:true});
   if(!ranked)showNotice('MODO LOCAL · RANKING GLOBAL NÃO CONFIGURADO',2.6);
@@ -303,7 +303,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   if(ranked&&runToken){
    $(section,'[data-l-message]').textContent='Registrando seus pontos no ranking global…';
    try{
-    const result=await requestJSON(START_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'finish',token:runToken,name:player,score,hits,shots,bonusSec:extraTime,elapsedMs:Math.round(elapsed*1000)})},6500);
+    const result=await requestJSON(START_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'finish',token:runToken,name:player,score,hits,shots,misses,bonusSec:extraTime,elapsedMs:Math.round(elapsed*1000)})},6500);
     $(section,'[data-l-message]').textContent=result.ok?'Pontuação registrada no ranking global!':'Sua pontuação ficou salva neste navegador. Ranking global indisponível.';
    }catch{$(section,'[data-l-message]').textContent='Sua pontuação ficou salva neste navegador. Não foi possível enviar ao ranking global.';}
   }else $(section,'[data-l-message]').textContent='Pontuação salva neste navegador. O ranking global requer configuração do banco.';
