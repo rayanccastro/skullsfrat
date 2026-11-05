@@ -60,27 +60,27 @@
 @media(prefers-reduced-motion:reduce){.lucifer-hud .is-critical{animation:none}.lucifer-section *{scroll-behavior:auto}}
 
 
-/* Atualização: carros transparentes, easter egg Obscury, ranking sempre acessível. */
-.lucifer-obscury-bubble{
- position:absolute;z-index:6;max-width:70%;min-width:max-content;
+/* Atualização: carros transparentes, diálogos dos carros, ranking sempre acessível. */
+.lucifer-car-bubble{
+ position:absolute;z-index:6;width:max-content;max-width:min(70%,460px);min-width:0;
  transform:translate(-50%,-100%);pointer-events:none;
  padding:12px 18px;
  background:linear-gradient(145deg,#201027,#090812);
  border:2px solid #b15ef2;border-radius:6px;
  color:#fff0ff;text-align:center;
- font:900 clamp(12px,1.65vw,20px)/1.1 var(--condensed,Arial,sans-serif);
+ font:900 clamp(12px,1.65vw,20px)/1.25 var(--condensed,Arial,sans-serif);
  letter-spacing:.045em;text-shadow:0 1px 1px #000,0 0 12px #b45bf7;
  box-shadow:0 0 0 3px #110819,0 0 28px #a64ae595;
- white-space:nowrap;
- animation:obscury-bubble-pop 2.3s ease-out both;
+ white-space:normal;overflow-wrap:break-word;
+ animation:lucifer-bubble-pop var(--lucifer-dialogue-duration,2300ms) ease-out both;
 }
-.lucifer-obscury-bubble::after{
+.lucifer-car-bubble::after{
  content:'';position:absolute;left:50%;bottom:-13px;
  transform:translateX(-50%) rotate(45deg);
  width:16px;height:16px;background:#120a19;
  border-right:2px solid #b15ef2;border-bottom:2px solid #b15ef2;
 }
-@keyframes obscury-bubble-pop{
+@keyframes lucifer-bubble-pop{
  0%{opacity:0;transform:translate(-50%,-75%) scale(.6)}
  12%,77%{opacity:1;transform:translate(-50%,-100%) scale(1)}
  100%{opacity:0;transform:translate(-50%,-122%) scale(.96)}
@@ -128,12 +128,12 @@
 @media(max-width:610px){
  .lucifer-ranking-floating{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:10px;min-height:46px;padding:9px 13px;font-size:10px}
  .lucifer-ranking-floating span:first-child{font-size:20px}
- .lucifer-obscury-bubble{padding:7px 9px;letter-spacing:0;font-size:11px}
+ .lucifer-car-bubble{padding:7px 9px;letter-spacing:0;font-size:11px}
  .lucifer-ranking-dialog-inner{padding:16px}
  .lucifer-ranking-dialog h2{font-size:30px}
 }
 @media(prefers-reduced-motion:reduce){
- .lucifer-obscury-bubble{animation:none}
+ .lucifer-car-bubble{animation:none}
  .lucifer-ranking-floating{transition:none}
 }
 

@@ -3,6 +3,7 @@
 
 import { createAnastacia, summonAnastacia, advanceAnastacia, hitAnastacia, BOSS_BOUNDS, BOSS_DIALOGUE } from './lucifer-boss.js';
 import { createLuciferSounds } from './lucifer-sound.js';
+import { chooseCarDialogue } from './lucifer-dialogues.js';
 import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP, ANASTACIA } from './lucifer-rules.js';
 
 const CAR_NAMES = [
@@ -34,7 +35,7 @@ function timeText(seconds){const s=Math.max(0,Math.ceil(seconds));return `${Stri
 export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!after||document.getElementById('lucifer-game'))return()=>{};
  if(!document.querySelector('link[data-lucifer-css]')){
-  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=anastacia-dodge-20261105';css.dataset.luciferCss='';document.head.append(css);
+  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=car-dialogues-20261105';css.dataset.luciferCss='';document.head.append(css);
  }
  const section=document.createElement('section');section.id='lucifer-game';section.className='lucifer-section section-space';
  section.innerHTML=`<div class="shell">
@@ -114,18 +115,28 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  const keys={left:false,right:false,up:false,down:false};
  let phase='welcome',player='',runToken=null,ranked=false,score=0,hits=0,shots=0,misses=0,escaped=0,combo=0,extraTime=0;
  let remaining=BASE_TIME,aim={x:WIDTH/2,y:205},cars=[],shotsInFlight=[],particles=[],effects=[], last=0,raf=0,elapsed=0,spawnClock=0,shotCooldown=0;
- let messageEnd=0,touchStart=null,remoteRanking=false,carBag=[],easterTimer=0;
- function showObscuryEgg(x,y){
-  stage.querySelector('.lucifer-obscury-bubble')?.remove();
-  clearTimeout(easterTimer);
+ let messageEnd=0,touchStart=null,remoteRanking=false,carBag=[],dialogueTimer=0;
+ function clearCarDialogue(){
+  clearTimeout(dialogueTimer);
+  stage.querySelector('.lucifer-car-bubble')?.remove();
+ }
+ function showCarDialogue(name,x,y){
+  const text=chooseCarDialogue(name);
+  if(!text)return;
+  clearCarDialogue();
+  const duration=text.length>25?4800:2300;
   const bubble=document.createElement('div');
-  bubble.className='lucifer-obscury-bubble';
+  bubble.className='lucifer-car-bubble';
   bubble.setAttribute('role','status');
-  bubble.textContent='Maldito Protagonista';
-  bubble.style.left=(clamp(x,145,WIDTH-145)/WIDTH*100).toFixed(2)+'%';
-  bubble.style.top=(clamp(y-62,46,HEIGHT-100)/HEIGHT*100).toFixed(2)+'%';
+  bubble.textContent=text;
+  bubble.style.setProperty('--lucifer-dialogue-duration',`${duration}ms`);
   stage.append(bubble);
-  easterTimer=setTimeout(()=>bubble.remove(),2300);
+  const w=stage.clientWidth,h=stage.clientHeight;
+  const left=clamp(x/WIDTH*w,bubble.offsetWidth/2+12,w-bubble.offsetWidth/2-12);
+  const top=clamp((y-50)/HEIGHT*h,bubble.offsetHeight*1.25+18,h-20);
+  bubble.style.left=(left/w*100).toFixed(2)+'%';
+  bubble.style.top=(top/h*100).toFixed(2)+'%';
+  dialogueTimer=setTimeout(()=>bubble.remove(),duration);
  }
  const groundLines=[158,248,339],scenePattern=(x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,w,h);};
  function canPlay(){return phase==='playing';}
@@ -267,7 +278,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  function beginBoss(){
   if(!summonAnastacia(boss,score))return;
   cars=[];shotsInFlight=[];spawnClock=FIRST_SPAWN;
-  clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();
+  clearCarDialogue();
   updateBossHUD();
   stage.scrollIntoView({behavior:'auto',block:'nearest'});
   showNotice('ANASTACIA ENTROU NA CAÇA!',2.4);
@@ -342,7 +353,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
    cars.splice(cars.indexOf(target),1);
    hits++;combo++;score+=SCORE_PER_CAR;
    const bonus=Math.min(MAX_BONUS,combo);remaining+=bonus;extraTime+=bonus;
-   makeExplosion(target.x,target.y,true);sounds.explode();if(target.index===CAR_NAMES.indexOf('Obscury'))showObscuryEgg(target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
+   makeExplosion(target.x,target.y,true);sounds.explode();showCarDialogue(CAR_NAMES[target.index],target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
    beginBoss();
   }else{misses++;combo=0;remaining=Math.max(0,remaining-MISS_PENALTY);makeExplosion(projectile.tx,projectile.ty,false);showNotice(`ERROU A MOLOTOV!  −${MISS_PENALTY}s`,1.35,true);}
   updateHUD();
@@ -440,7 +451,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  async function finish(){
   if(phase!=='playing')return;
-  phase='finished';stop();remaining=0;saveLocal(player,score);updateHUD();
+  phase='finished';stop();clearCarDialogue();remaining=0;saveLocal(player,score);updateHUD();
   overlay.hidden=false;form.hidden=true;$(section,'[data-l-result]').hidden=false;
   $(section,'[data-l-title]').textContent='FIM DE JOGO';
   $(section,'[data-l-message]').textContent='Lucifer concluiu sua caça. Volte ao mapa para superar o placar.';
@@ -488,7 +499,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   if(event.code==='Space'){event.preventDefault();if(!event.repeat)throwBottle();}
  }
  function onKeyUp(event){const dir={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[event.key];if(dir)keys[dir]=false;}
- function reset(){boss=createAnastacia();bossHealthShown=-1;sounds.stop();clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';cars=[];shotsInFlight=[];particles=[];effects=[];score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
+ function reset(){boss=createAnastacia();bossHealthShown=-1;sounds.stop();clearCarDialogue();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';cars=[];shotsInFlight=[];particles=[];effects=[];score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
  function onClick(event){
   const b=event.target.closest('button');if(!b)return;
   if(b.matches('[data-l-again]')){reset();input.focus();}
@@ -514,5 +525,5 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  images.goat.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  images.cars.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  showIntro();draw(performance.now(),0);void loadRanking();
- return()=>{sounds.dispose();stop();clearTimeout(easterTimer);window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);if(rankDialog.open)rankDialog.close();rankButton.remove();rankDialog.remove();section.remove();};
+ return()=>{sounds.dispose();stop();clearCarDialogue();window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);if(rankDialog.open)rankDialog.close();rankButton.remove();rankDialog.remove();section.remove();};
 }
