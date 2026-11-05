@@ -1,7 +1,7 @@
 const chance = .35;
 
 export const CAR_DIALOGUES = Object.freeze({
-  Obscury: Object.freeze({ chance: 1, text: 'Maldito Protagonista' }),
+  Obscury: Object.freeze({ chance, text: 'Maldito Protagonista' }),
   Obsession: Object.freeze({ chance, text: 'Ave Lilith... O que será de mim Meu Deus' }),
   Shroom: Object.freeze({ chance, text: 'Acende, puxa, prende passa...🍁' }),
   'Neon Syndicate': Object.freeze({ chance, text: 'Pane no sistema, alguém me desconfigurou' }),
