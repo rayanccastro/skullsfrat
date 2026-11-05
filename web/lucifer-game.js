@@ -42,7 +42,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
     <div class="lucifer-stage"><canvas width="960" height="540" tabindex="0" role="application" aria-label="Lucifer — jogo arcade. Use as setas para mover a mira e a barra de espaço para lançar." data-l-canvas></canvas>
       <div class="lucifer-notice" data-l-notice aria-live="polite"></div>
       <div class="lucifer-overlay" data-l-overlay>
-       <div class="lucifer-intro-art"><img src="/assets/lucifer-sprite.png" alt="Lucifer: pequeno bode escuro de olhos vermelhos e pentagrama na testa"></div>
+       <div class="lucifer-intro-art"><img src="/assets/lucifer-pixel-32bit.webp" alt="Lucifer em pixel art de 32 bits, com olhos vermelhos, pentagrama e colar dos Skulls" width="1295" height="1215"></div>
        <div class="lucifer-overlay-content"><span class="lucifer-eyebrow">◆ SISTEMA SKULLS ◆</span><h3 data-l-title>O bode está pronto.</h3><p data-l-message>${INTRO_TEXT}</p>
         <form data-l-form autocomplete="off"><label for="lucifer-player-name">NOME DO JOGADOR</label><input id="lucifer-player-name" name="player" maxlength="24" minlength="2" placeholder="Digite seu nome" required><button type="submit">COMEÇAR PARTIDA <span aria-hidden="true">↗</span></button></form>
         <div class="lucifer-result" data-l-result hidden><b data-l-final>0</b><span data-l-final-text>pontos</span><button type="button" data-l-again>JOGAR NOVAMENTE ↗</button></div>
@@ -93,7 +93,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!ctx)return()=>{rankButton.remove();rankDialog.remove();section.remove();};
  const overlay=$(section,'[data-l-overlay]'),form=$(section,'[data-l-form]'),input=$(section,'#lucifer-player-name');
  const images={};
- for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-v2.webp',goat:'/assets/lucifer-sprite.png'})){
+ for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-v2.webp',goat:'/assets/lucifer-pixel-32bit.webp'})){
   const image=new Image();image.src=url;images[key]=image;
  }
  const keys={left:false,right:false,up:false,down:false};
@@ -184,7 +184,10 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   const x=WIDTH/2,y=426;
   // Goat shadows
   ctx.fillStyle='#0009';ctx.beginPath();ctx.ellipse(x,495,64,13,0,0,Math.PI*2);ctx.fill();
-  if(images.goat.complete&&images.goat.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(images.goat,x-68,y-62,136,150);ctx.imageSmoothingEnabled=true;}
+  if(images.goat.complete&&images.goat.naturalWidth){
+   const height=150,width=height*images.goat.naturalWidth/images.goat.naturalHeight;
+   ctx.imageSmoothingEnabled=false;ctx.drawImage(images.goat,x-width/2,y-62,width,height);ctx.imageSmoothingEnabled=true;
+  }
   else{ctx.fillStyle='#434145';ctx.beginPath();ctx.arc(x,y,46,0,Math.PI*2);ctx.fill();}
  }
  function drawAim(t){
