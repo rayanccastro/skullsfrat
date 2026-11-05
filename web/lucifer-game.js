@@ -1,6 +1,7 @@
 /* SKULLS FRATERNITY · Lucifer — Caça às Fraternidades
    Jogo arcade fictício 32-bit. As molotovs são efeitos de fantasia, sem mecânicas reais. */
 
+import { createLuciferSounds } from './lucifer-sound.js';
 import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP } from './lucifer-rules.js';
 
 const CAR_NAMES = [
@@ -32,7 +33,7 @@ function timeText(seconds){const s=Math.max(0,Math.ceil(seconds));return `${Stri
 export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!after||document.getElementById('lucifer-game'))return()=>{};
  if(!document.querySelector('link[data-lucifer-css]')){
-  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=lucifer-cars-v2-20261104';css.dataset.luciferCss='';document.head.append(css);
+  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=lucifer-sounds-20261105';css.dataset.luciferCss='';document.head.append(css);
  }
  const section=document.createElement('section');section.id='lucifer-game';section.className='lucifer-section section-space';
  section.innerHTML=`<div class="shell">
@@ -50,7 +51,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
       </div>
     </div>
     <div class="lucifer-controls"><p><b>↑ ↓ ← →</b> Mover a mira <b>ESPAÇO</b> Lançar a Molotov</p><div class="lucifer-dpad" aria-label="Controles para celular"><button type="button" data-l-dir="up" aria-label="Mirar para cima">↑</button><button type="button" data-l-dir="left" aria-label="Mirar para esquerda">←</button><button type="button" data-l-dir="down" aria-label="Mirar para baixo">↓</button><button type="button" data-l-dir="right" aria-label="Mirar para direita">→</button><button type="button" class="lucifer-throw" data-l-throw aria-label="Lançar a Molotov">LANÇAR ⛧</button></div></div>
-    <div class="lucifer-footer"><p>20 carros das fraternidades • 10 pontos por acerto • bônus até +6s • Molotov errada: −${MISS_PENALTY}s • carro que escapar: −${ESCAPE_PENALTY}s</p><button type="button" data-l-reset>REINICIAR</button></div>
+    <div class="lucifer-footer"><p>20 carros das fraternidades • 10 pontos por acerto • bônus até +6s • Molotov errada: −${MISS_PENALTY}s • carro que escapar: −${ESCAPE_PENALTY}s</p><div class="lucifer-footer-actions"><button type="button" data-l-sound aria-pressed="true">SOM LIGADO</button><button type="button" data-l-reset>REINICIAR</button></div></div>
   </div>
   <div class="lucifer-ranking"><div><span class="section-kicker">OS NOMES QUE SOBREVIVERAM</span><h3>Ranking dos Skulls</h3><p data-l-ranking-status>Carregando o placar…</p></div><div class="lucifer-ranking-table" data-l-ranking><p>Buscando jogadores…</p></div><button type="button" data-l-refresh>ATUALIZAR RANKING</button></div>
  </div>`;
@@ -91,6 +92,8 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  });
  const canvas=$(section,'[data-l-canvas]'),ctx=canvas.getContext('2d');
  if(!ctx)return()=>{rankButton.remove();rankDialog.remove();section.remove();};
+ const sounds=createLuciferSounds(),soundToggle=$(section,'[data-l-sound]');
+ if(!sounds.supported){soundToggle.disabled=true;soundToggle.textContent='SOM INDISPONÍVEL';soundToggle.setAttribute('aria-pressed','false');}
  const overlay=$(section,'[data-l-overlay]'),form=$(section,'[data-l-form]'),input=$(section,'#lucifer-player-name');
  const images={};
  for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-v2.webp',goat:'/assets/lucifer-pixel-32bit.webp'})){
@@ -224,7 +227,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
    cars.splice(cars.indexOf(target),1);
    hits++;combo++;score+=SCORE_PER_CAR;
    const bonus=Math.min(MAX_BONUS,combo);remaining+=bonus;extraTime+=bonus;
-   makeExplosion(target.x,target.y,true);if(target.index===CAR_NAMES.indexOf('Obscury'))showObscuryEgg(target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
+   makeExplosion(target.x,target.y,true);sounds.explode();if(target.index===CAR_NAMES.indexOf('Obscury'))showObscuryEgg(target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
   }else{misses++;combo=0;remaining=Math.max(0,remaining-MISS_PENALTY);makeExplosion(projectile.tx,projectile.ty,false);showNotice(`ERROU A MOLOTOV!  −${MISS_PENALTY}s`,1.35,true);}
   updateHUD();
  }
@@ -278,6 +281,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  function throwBottle(){
   if(!canPlay()||shotCooldown>0)return;
+  sounds.launch();
   shotCooldown=.4;shots++;shotsInFlight.push({x:WIDTH/2,y:435,tx:aim.x,ty:aim.y,p:0});
  }
  function moveAim(dir,amount=35){
@@ -301,6 +305,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   const nickname=input.value.trim().replace(/\s+/g,' ');
   if(nickname.length<2||nickname.length>24){input.setCustomValidity('Digite um nome entre 2 e 24 caracteres.');input.reportValidity();return;}
   input.setCustomValidity('');player=nickname;
+  sounds.unlock();
   const btn=form.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='PREPARANDO…';
   try{
    const session=await requestJSON(START_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'start',name:player})},2200);
@@ -357,16 +362,21 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  function onKeyDown(event){
   if(!canPlay()||event.altKey||event.ctrlKey||event.metaKey)return;
   if(document.activeElement!==canvas&&!section.contains(document.activeElement))return;
-  if(event.target instanceof HTMLInputElement||event.target instanceof HTMLTextAreaElement)return;
+  if(event.target instanceof HTMLInputElement||event.target instanceof HTMLTextAreaElement||event.target.closest('button'))return;
   const dir={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[event.key];
   if(dir){event.preventDefault();keys[dir]=true;moveAim(dir,12);}
   if(event.code==='Space'){event.preventDefault();if(!event.repeat)throwBottle();}
  }
  function onKeyUp(event){const dir={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[event.key];if(dir)keys[dir]=false;}
- function reset(){clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
+ function reset(){sounds.stop();clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
  function onClick(event){
   const b=event.target.closest('button');if(!b)return;
   if(b.matches('[data-l-again]')){reset();input.focus();}
+  if(b.matches('[data-l-sound]')){
+   const enabled=soundToggle.getAttribute('aria-pressed')!=='true';
+   sounds.setEnabled(enabled);soundToggle.setAttribute('aria-pressed',String(enabled));
+   soundToggle.textContent=enabled?'SOM LIGADO':'SOM DESLIGADO';
+  }
   if(b.matches('[data-l-refresh]'))void loadRanking();
   if(b.matches('[data-l-reset]'))reset();
   if(b.matches('[data-l-throw]')){throwBottle();canvas.focus({preventScroll:true});}
@@ -383,5 +393,5 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  images.goat.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  images.cars.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  showIntro();draw(performance.now(),0);void loadRanking();
- return()=>{stop();clearTimeout(easterTimer);window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);if(rankDialog.open)rankDialog.close();rankButton.remove();rankDialog.remove();section.remove();};
+ return()=>{sounds.dispose();stop();clearTimeout(easterTimer);window.removeEventListener('keydown',onKeyDown);window.removeEventListener('keyup',onKeyUp);if(rankDialog.open)rankDialog.close();rankButton.remove();rankDialog.remove();section.remove();};
 }

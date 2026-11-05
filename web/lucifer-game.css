@@ -42,9 +42,9 @@
 .lucifer-dpad button{background:#24171a;border:1px solid #93413c;color:#f0dbd5;min-width:42px;height:42px;font-size:20px;line-height:1}
 .lucifer-dpad .lucifer-throw{background:#842226;min-width:105px;font-size:11px;font-weight:800;padding-inline:9px}
 .lucifer-dpad button:active{background:#c33a37;transform:translateY(1px)}
-.lucifer-footer{padding:10px 17px;border-top:1px solid #392022;display:flex;justify-content:space-between;align-items:center;gap:20px;background:#110c0e}
-.lucifer-footer p{margin:0;color:#aa8d89;font:600 10px/1.6 var(--body,Arial,sans-serif)}
-.lucifer-footer button{border:0;background:none;color:#e3b2a8;font:800 10px var(--body,Arial,sans-serif);letter-spacing:.08em}
+.lucifer-footer{flex-wrap:wrap;padding:10px 17px;border-top:1px solid #392022;display:flex;justify-content:space-between;align-items:center;gap:20px;background:#110c0e}
+.lucifer-footer p{flex:1 1 360px;margin:0;color:#aa8d89;font:600 10px/1.6 var(--body,Arial,sans-serif)}
+.lucifer-footer-actions{display:flex;align-items:center;gap:16px}.lucifer-footer button{min-height:36px;white-space:nowrap;border:0;background:none;color:#e3b2a8;font:800 10px var(--body,Arial,sans-serif);letter-spacing:.08em}
 .lucifer-ranking{margin-top:37px;display:grid;grid-template-columns:.85fr 1.5fr;gap:34px;align-items:start;background:linear-gradient(130deg,#2c101227,#07070830);border:1px solid #372224;padding:30px}
 .lucifer-ranking h3{font:500 38px/1.02 var(--serif,Georgia,serif);margin:0 0 14px}
 .lucifer-ranking p{font-size:11px;color:#aa9c99;line-height:1.75}
