@@ -10,14 +10,14 @@ html[data-wheel-smoothing]{scroll-behavior:auto}
  -webkit-mask:url('/assets/skulls-logo-capa.png') center/100% 100% no-repeat;
  mask:url('/assets/skulls-logo-capa.png') center/100% 100% no-repeat;
  background:linear-gradient(112deg,transparent 44%,#ebf1f605 47%,#ebf1f61a 49%,#ffffff29 50%,#ebf1f61a 51%,transparent 54%) 100% 0/250% 100% no-repeat;
- animation:crest-breathe 9s var(--ease-in-out) infinite alternate,crest-reflection 11s ease-in-out infinite;
+ animation:crest-breathe 9s var(--ease-in-out) infinite alternate,crest-reflection 5s ease-in-out infinite;
  animation-play-state:paused;
 }
 .hero-art.is-inview .hero-relief::after{animation-play-state:running}
 @keyframes crest-reflection{
  0%,8%{background-position:100% 0;opacity:0}
- 12%{opacity:.75}
- 29%{opacity:.75}
+ 12%{opacity:.9}
+ 29%{opacity:.9}
  33%{background-position:0% 0;opacity:0}
  100%{background-position:0% 0;opacity:0}
 }
