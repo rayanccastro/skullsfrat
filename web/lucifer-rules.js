@@ -16,9 +16,13 @@ export const ANASTACIA = Object.freeze({
   damage: 25,
   bombPenalty: 5,
   bombFuse: 4.8,
-  bombInterval: 3.2,
-  firstBombDelay: 1.8,
+  bombInterval: 6.4,
+  firstBombDelay: 3,
   bombLimit: 6,
   bombBurst: 2,
-  defeatDuration: 1.2
+  defeatDuration: 1.2,
+  dodgeHealthRatio: .3,
+  dodgeMinInterval: .8,
+  dodgeIntervalRange: .75,
+  dodgeSpeed: 240
 });

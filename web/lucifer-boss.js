@@ -1,13 +1,16 @@
 import { ANASTACIA } from './lucifer-rules.js';
 
-export const BOSS_BOUNDS = Object.freeze({ x: 382, y: 68, width: 196, height: 286 });
+export const BOSS_BOUNDS = Object.freeze({ x: 396, y: 132, width: 168, height: 244 });
+export const DODGE_AREA = Object.freeze({ minX: 104, maxX: 688, minY: 128, maxY: 158 });
 export const BOSS_DIALOGUE = 'Quem autorizou você a destruir esses carros bode inutil? esse trabalho é meuu!';
 
 export function createAnastacia() {
   return {
     phase: 'waiting', health: ANASTACIA.health, age: 0, hitFlash: 0,
     bombClock: ANASTACIA.firstBombDelay, deathTime: 0, bombs: [],
-    hits: 0, bombsBurned: 0, bombsExploded: 0, defeated: false
+    hits: 0, bombsBurned: 0, bombsExploded: 0, defeated: false,
+    position: { x: BOSS_BOUNDS.x, y: BOSS_BOUNDS.y },
+    dodgeTarget: null, dodgeClock: 0, dodging: false
   };
 }
 
@@ -36,6 +39,28 @@ export function advanceAnastacia(boss, dt, random = Math.random) {
     return false;
   });
 
+  if (boss.dodging) {
+    boss.dodgeClock -= dt;
+    if (boss.dodgeClock <= 0 || !boss.dodgeTarget) {
+      const { minX, maxX, minY, maxY } = DODGE_AREA;
+      let x = minX + random() * (maxX - minX);
+      // Avoid a stationary "dodge" when the next random point is too close.
+      if (Math.abs(x - boss.position.x) < 120) {
+        x = boss.position.x < (minX + maxX) / 2 ? maxX - random() * 120 : minX + random() * 120;
+      }
+      boss.dodgeTarget = { x, y: minY + random() * (maxY - minY) };
+      boss.dodgeClock = ANASTACIA.dodgeMinInterval + random() * ANASTACIA.dodgeIntervalRange;
+    }
+    const dx = boss.dodgeTarget.x - boss.position.x, dy = boss.dodgeTarget.y - boss.position.y;
+    const distance = Math.hypot(dx, dy);
+    const step = Math.min(distance, ANASTACIA.dodgeSpeed * dt);
+    if (distance > 0) {
+      boss.position.x += dx / distance * step;
+      boss.position.y += dy / distance * step;
+    }
+    return exploded;
+  }
+
   boss.bombClock -= dt;
   if (boss.bombClock <= 0) {
     boss.bombClock = ANASTACIA.bombInterval;
@@ -60,11 +85,13 @@ export function hitAnastacia(boss, point) {
     return 'bomb';
   }
 
-  const { x, y, width, height } = BOSS_BOUNDS;
+  const { x, y } = boss.position;
+  const { width, height } = BOSS_BOUNDS;
   if (point.x < x || point.x > x + width || point.y < y || point.y > y + height) return 'miss';
   boss.health = Math.max(0, boss.health - ANASTACIA.damage);
   boss.hits++;
   boss.hitFlash = .16;
+  if (boss.health > 0 && boss.health <= ANASTACIA.health * ANASTACIA.dodgeHealthRatio) boss.dodging = true;
   if (boss.health > 0) return 'boss';
 
   boss.phase = 'dying';

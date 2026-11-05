@@ -34,20 +34,19 @@ function timeText(seconds){const s=Math.max(0,Math.ceil(seconds));return `${Stri
 export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!after||document.getElementById('lucifer-game'))return()=>{};
  if(!document.querySelector('link[data-lucifer-css]')){
-  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=anastacia-boss-20261105';css.dataset.luciferCss='';document.head.append(css);
+  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=anastacia-dodge-20261105';css.dataset.luciferCss='';document.head.append(css);
  }
  const section=document.createElement('section');section.id='lucifer-game';section.className='lucifer-section section-space';
  section.innerHTML=`<div class="shell">
   <div class="lucifer-head"><div><span class="section-kicker">SKULLS ARCADE · 32 BITS</span><h2>LUCIFER <em>— Caça às Fraternidades</em></h2><p>O bode dos Skulls tem dois minutos para acumular pontos. Escolha seu nome, mire nos carros e sobreviva ao relógio.</p></div><span class="lucifer-sigil" aria-hidden="true">⛧</span></div>
   <div class="lucifer-cabinet">
     <header class="lucifer-hud"><div><span>JOGADOR</span><strong data-l-player>SEM REGISTRO</strong></div><div><span>PONTOS</span><strong data-l-score>0000</strong></div><div><span>TEMPO</span><strong data-l-time>02:00</strong></div><div><span>COMBO</span><strong data-l-combo>×0</strong></div></header>
-    <div class="lucifer-boss-panel" data-l-boss-panel hidden>
-      <div class="lucifer-boss-heading"><strong>ANASTACIA</strong><span data-l-boss-health>500 / 500</span></div>
-      <div class="lucifer-boss-health" role="progressbar" aria-label="Vida de Anastacia" aria-valuemin="0" aria-valuemax="500" aria-valuenow="500" data-l-boss-healthbar><span data-l-boss-healthfill></span></div>
-      <blockquote class="lucifer-boss-dialogue" data-l-boss-dialogue role="status">${BOSS_DIALOGUE}</blockquote>
-      <p>Molotov na Anastacia · ${ANASTACIA.damage} de dano. Acerte as bombas para queimá-las. Cada bomba que explodir tira ${ANASTACIA.bombPenalty}s.</p>
-    </div>
     <div class="lucifer-stage"><canvas width="960" height="540" tabindex="0" role="application" aria-label="Lucifer — jogo arcade. Use as setas para mover a mira e a barra de espaço para lançar." data-l-canvas></canvas>
+      <div class="lucifer-boss-panel" data-l-boss-panel hidden>
+        <div class="lucifer-boss-heading"><strong>ANASTACIA</strong><span data-l-boss-health>500 / 500</span></div>
+        <div class="lucifer-boss-health" role="progressbar" aria-label="Vida de Anastacia" aria-valuemin="0" aria-valuemax="500" aria-valuenow="500" data-l-boss-healthbar><span data-l-boss-healthfill></span></div>
+      </div>
+      <blockquote class="lucifer-boss-dialogue" data-l-boss-dialogue role="status" hidden>${BOSS_DIALOGUE}</blockquote>
       <div class="lucifer-notice" data-l-notice aria-live="polite"></div>
       <div class="lucifer-overlay" data-l-overlay>
        <div class="lucifer-intro-art"><img src="/assets/lucifer-pixel-32bit.webp" alt="Lucifer em pixel art de 32 bits, com olhos vermelhos, pentagrama e colar dos Skulls" width="1295" height="1215"></div>
@@ -57,6 +56,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
        </div>
       </div>
     </div>
+    <p class="lucifer-boss-help" data-l-boss-help hidden></p>
     <div class="lucifer-controls"><p><b>↑ ↓ ← →</b> Mover a mira <b>ESPAÇO</b> Lançar a Molotov</p><div class="lucifer-dpad" aria-label="Controles para celular"><button type="button" data-l-dir="up" aria-label="Mirar para cima">↑</button><button type="button" data-l-dir="left" aria-label="Mirar para esquerda">←</button><button type="button" data-l-dir="down" aria-label="Mirar para baixo">↓</button><button type="button" data-l-dir="right" aria-label="Mirar para direita">→</button><button type="button" class="lucifer-throw" data-l-throw aria-label="Lançar a Molotov">LANÇAR ⛧</button></div></div>
     <div class="lucifer-footer"><p>20 carros das fraternidades • 10 pontos por acerto • bônus até +6s • Molotov errada: −${MISS_PENALTY}s • carro que escapar: −${ESCAPE_PENALTY}s</p><div class="lucifer-footer-actions"><button type="button" data-l-sound aria-pressed="true">SOM LIGADO</button><button type="button" data-l-reset>REINICIAR</button></div></div>
   </div>
@@ -108,6 +108,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  const bossPanel=$(section,'[data-l-boss-panel]'),bossHealth=$(section,'[data-l-boss-health]'),
   bossHealthbar=$(section,'[data-l-boss-healthbar]'),bossHealthfill=$(section,'[data-l-boss-healthfill]');
+ const bossDialogue=$(section,'[data-l-boss-dialogue]'),bossHelp=$(section,'[data-l-boss-help]');
  let boss=createAnastacia();
  let bossHealthShown=-1;
  const keys={left:false,right:false,up:false,down:false};
@@ -132,8 +133,14 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  function updateBossHUD(){
   const visible=canPlay()&&(boss.phase==='active'||boss.phase==='dying');
   bossPanel.hidden=!visible;
+  bossDialogue.hidden=!visible||boss.age>=6;
+  bossHelp.hidden=!visible;
+  stage.classList.toggle('has-boss',visible);
   if(bossHealthShown===boss.health)return;
   bossHealthShown=boss.health;
+  bossHelp.textContent=boss.dodging
+   ? 'FASE FINAL · Anastacia parou de lançar bombas e está desviando. Antecipe os movimentos!'
+   : `Molotov: ${ANASTACIA.damage} de dano · Queime as bombas antes do pavio acabar: cada explosão tira ${ANASTACIA.bombPenalty}s.`;
   bossHealth.textContent=`${boss.health} / ${ANASTACIA.health}`;
   bossHealthbar.setAttribute('aria-valuenow',String(boss.health));
   bossHealthfill.style.transform=`scaleX(${boss.health/ANASTACIA.health})`;
@@ -218,9 +225,10 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   if(boss.phase!=='active'&&boss.phase!=='dying')return;
   const image=images.boss,height=BOSS_BOUNDS.height;
   const width=image.naturalWidth?height*image.naturalWidth/image.naturalHeight:height;
-  const x=WIDTH/2-width/2,y=BOSS_BOUNDS.y;
+  const centerX=boss.position.x+BOSS_BOUNDS.width/2;
+  const x=centerX-width/2,y=boss.position.y;
   ctx.save();
-  ctx.fillStyle='#a71b3526';ctx.beginPath();ctx.ellipse(WIDTH/2,y+height-6,114,19,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#a71b3526';ctx.beginPath();ctx.ellipse(centerX,y+height-6,96,16,0,0,Math.PI*2);ctx.fill();
   ctx.globalAlpha=boss.hitFlash>0?.48:1;
   if(image.complete&&image.naturalWidth){
    if(boss.phase==='dying'){
@@ -233,8 +241,8 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
     }
    }else ctx.drawImage(image,x,y,width,height);
   }else{
-   ctx.fillStyle='#8e182b';ctx.fillRect(BOSS_BOUNDS.x,y,BOSS_BOUNDS.width,height);
-   ctx.fillStyle='#eee0ec';ctx.font='12px "Skulls Pixel",monospace';ctx.textAlign='center';ctx.fillText('ANASTACIA',WIDTH/2,y+height/2);
+   ctx.fillStyle='#8e182b';ctx.fillRect(boss.position.x,y,BOSS_BOUNDS.width,height);
+   ctx.fillStyle='#eee0ec';ctx.font='12px "Skulls Pixel",monospace';ctx.textAlign='center';ctx.fillText('ANASTACIA',centerX,y+height/2);
   }
   ctx.restore();
   for(const bomb of boss.bombs)drawBossBomb(bomb,t);
@@ -242,7 +250,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  function drawBossBomb(bomb,t){
   const flight=Math.min(1,bomb.age/.55);
   const x=WIDTH/2+(bomb.x-WIDTH/2)*flight;
-  const y=BOSS_BOUNDS.y+120+(bomb.y-BOSS_BOUNDS.y-120)*flight-Math.sin(Math.PI*flight)*72;
+  const y=BOSS_BOUNDS.y+90+(bomb.y-BOSS_BOUNDS.y-90)*flight-Math.sin(Math.PI*flight)*72;
   const seconds=Math.max(0,ANASTACIA.bombFuse-bomb.age),urgent=seconds<1.5;
   ctx.save();
   ctx.strokeStyle=urgent?'#ff6041':'#dbb260';ctx.lineWidth=2;
@@ -261,7 +269,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   cars=[];shotsInFlight=[];spawnClock=FIRST_SPAWN;
   clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();
   updateBossHUD();
-  bossPanel.scrollIntoView({behavior:'auto',block:'nearest'});
+  stage.scrollIntoView({behavior:'auto',block:'nearest'});
   showNotice('ANASTACIA ENTROU NA CAÇA!',2.4);
  }
  function advanceBoss(dt){
@@ -307,15 +315,18 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  function impact(projectile){
   if(boss.phase==='active'){
+   const wasDodging=boss.dodging;
    const hit=hitAnastacia(boss,{x:projectile.tx,y:projectile.ty});
    if(hit==='bomb'){
     makeExplosion(projectile.tx,projectile.ty,false);sounds.explode();showNotice('BOMBA QUEIMADA!',.9);
    }else if(hit==='boss'||hit==='defeated'){
     makeExplosion(projectile.tx,projectile.ty,false);
-    showNotice(`ANASTACIA  −${ANASTACIA.damage} PV`,.7);
+    if(!wasDodging&&boss.dodging)showNotice('ANASTACIA ESTÁ DESVIANDO!',2);
+    else showNotice(`ANASTACIA  −${ANASTACIA.damage} PV`,.7);
     if(hit==='defeated'){
      shotsInFlight=[];
-     for(const [x,y] of [[420,150],[540,170],[480,235],[415,310],[545,310]])makeExplosion(x,y,true);
+     const cx=boss.position.x+BOSS_BOUNDS.width/2,cy=boss.position.y+BOSS_BOUNDS.height/2;
+     for(const [dx,dy] of [[-45,-65],[45,-50],[0,0],[-50,70],[50,70]])makeExplosion(cx+dx,cy+dy,true);
      sounds.explode();
     }
    }else{
