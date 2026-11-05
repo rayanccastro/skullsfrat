@@ -2,6 +2,26 @@
 html[data-wheel-smoothing]{scroll-behavior:auto}
 .hero-art img{transform-origin:50% 55%;animation:crest-breathe 9s var(--ease-in-out) infinite alternate;animation-play-state:paused}
 .hero-art.is-inview img{animation-play-state:running}
+
+/* A quiet silver reflection follows the logo's actual transparent outline. */
+.hero-relief::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ transform-origin:50% 55%;opacity:0;
+ -webkit-mask:url('/assets/skulls-logo-capa.png') center/100% 100% no-repeat;
+ mask:url('/assets/skulls-logo-capa.png') center/100% 100% no-repeat;
+ background:linear-gradient(112deg,transparent 44%,#ebf1f605 47%,#ebf1f61a 49%,#ffffff29 50%,#ebf1f61a 51%,transparent 54%) 100% 0/250% 100% no-repeat;
+ animation:crest-breathe 9s var(--ease-in-out) infinite alternate,crest-reflection 11s ease-in-out infinite;
+ animation-play-state:paused;
+}
+.hero-art.is-inview .hero-relief::after{animation-play-state:running}
+@keyframes crest-reflection{
+ 0%,8%{background-position:100% 0;opacity:0}
+ 12%{opacity:.75}
+ 29%{opacity:.75}
+ 33%{background-position:0% 0;opacity:0}
+ 100%{background-position:0% 0;opacity:0}
+}
+
 .art-halo{animation:halo-breathe 7s var(--ease-in-out) infinite alternate;animation-play-state:paused}
 .hero-art.is-inview .art-halo{animation-play-state:running}
 .invocation>img{animation:shadows-drift 16s var(--ease-in-out) infinite alternate;animation-play-state:paused}
@@ -17,7 +37,7 @@ html[data-wheel-smoothing]{scroll-behavior:auto}
 .field input,.field textarea,.field select{transition:border-color 160ms ease,background 160ms ease}
 .field input:focus,.field textarea:focus,.field select:focus{background:#14100e}
 .button:active{transform:scale(.97)}
-.motion-paused .hero-art img,.motion-paused .art-halo,.motion-paused .invocation>img{animation-play-state:paused}
+.motion-paused .hero-art .hero-relief::after,.motion-paused .hero-art img,.motion-paused .art-halo,.motion-paused .invocation>img{animation-play-state:paused}
 /* The cursor's head is the actual click hotspot. Text fields keep their text caret. */
 @media(hover:hover) and (pointer:fine){
   html,body,main,.act-content{cursor:url('/assets/cursor-serpent.svg') 4 3,auto}
@@ -40,7 +60,7 @@ html[data-wheel-smoothing]{scroll-behavior:auto}
 .form-privacy>p{font-size:10px;color:var(--muted)}
 .site-footer{padding-bottom:115px}
 .hero-art{pointer-events:auto}
-.hero-relief{transform:perspective(1000px) rotateX(0deg) rotateY(0deg);transition:transform 220ms var(--ease-out);transform-style:preserve-3d}
+.hero-relief{position:relative;transform:perspective(1000px) rotateX(0deg) rotateY(0deg);transition:transform 220ms var(--ease-out);transform-style:preserve-3d}
 .site-header nav>a[aria-current=location]::after{transform:scaleX(1)}
 .site-header nav>a[aria-current=location]{color:#edb5a1}
 .source-recruitment{--form-font:'New Rocker',Georgia,serif;background:#090909;border-color:#542c28}
@@ -73,4 +93,4 @@ html[data-wheel-smoothing]{scroll-behavior:auto}
 @media(max-width:760px){.source-recruitment{padding:23px 19px}.source-question input[type=text],.source-question textarea{font-size:16px}.source-label,.source-question legend{font-size:15px}.source-name-pair{gap:10px}.source-welcome>p{font-size:14px}.source-welcome>img{width:190px}.source-submit .button{white-space:normal;line-height:1.5}}
 @media(max-width:380px){.source-name-pair{grid-template-columns:1fr}}
 @media(max-width:760px){.form-discord-group .form-grid{grid-template-columns:1fr}.form-discord-group legend{font-size:11px}.form-welcome summary{font-size:12px}.form-welcome p{font-size:12px}.field label{font-size:11px}.form-oath-question{font-size:25px}.sk-game__actions button{min-height:38px}.manifesto-copy{font-size:14px}.act-content{font-size:13px}.site-footer{padding-bottom:125px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-art img,.art-halo,.invocation>img{animation:none!important}.button:active{transform:none}.button span,.text-link span,.nav-join span,.act-toggle{transition:none;transform:none}.site-header nav>a:not(.nav-join)::after{transition:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-art img,.hero-relief::after,.art-halo,.invocation>img{animation:none!important}.button:active{transform:none}.button span,.text-link span,.nav-join span,.act-toggle{transition:none;transform:none}.site-header nav>a:not(.nav-join)::after{transition:none}}
