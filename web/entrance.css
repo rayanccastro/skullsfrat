@@ -4,11 +4,11 @@
 .entry-curtain{position:absolute;top:0;bottom:0;width:50.1%;background:#080807;pointer-events:none;z-index:-1}
 .entry-curtain--left{left:0;background:radial-gradient(ellipse at 100% 45%,#291110 0%,#0e0909 43%,#080807 75%)}
 .entry-curtain--right{right:0;background:radial-gradient(ellipse at 0% 45%,#291110 0%,#0e0909 43%,#080807 75%)}
-.entry-content{position:relative;min-height:100%;height:100%;display:grid;grid-template-rows:minmax(min-content,1fr) auto minmax(min-content,1fr);justify-items:center;text-align:center;padding:34px 24px;gap:0}
+.entry-content{--entry-seal-offset:clamp(16px,3dvh,28px);position:relative;min-height:100%;height:100%;display:grid;grid-template-rows:minmax(min-content,1fr) auto minmax(min-content,1fr);justify-items:center;text-align:center;padding:34px 24px;gap:0}
 .entry-intro{align-self:end;margin-bottom:18px}
 .entry-copy h2{margin-bottom:0}
-.entry-content .entry-seal{margin:0;flex-shrink:0}
-.entry-content .entry-caption{align-self:start;margin-top:21px}
+.entry-content .entry-seal{top:var(--entry-seal-offset);margin:0;flex-shrink:0}
+.entry-content .entry-caption{position:relative;top:var(--entry-seal-offset);align-self:start;margin-top:21px}
 .entry-content::before,.entry-content::after{content:'';width:1px;height:60px;background:linear-gradient(transparent,#774638);position:absolute;left:50%;top:0;opacity:.6}
 .entry-content::after{top:auto;bottom:0;transform:rotate(180deg)}
 .entry-eyebrow{font:600 10px var(--body);letter-spacing:.32em;color:#bba797;margin:0 0 25px}
@@ -37,4 +37,4 @@
 @media(max-height:650px){.entry-content{padding-block:18px}.entry-content::before,.entry-content::after{display:none}.entry-eyebrow{margin-bottom:12px}.entry-intro{margin-bottom:8px}.entry-copy h2{font-size:34px}.entry-seal{width:clamp(170px,42vh,240px)}.entry-content .entry-caption{margin-top:8px}.entry-caption strong{margin-bottom:3px}}
 @media(prefers-reduced-motion:reduce){.entry-seal,.seal-intact,.entry-seal::before,.entry-seal::after{transition:none!important}.entry-seal:hover .seal-intact,.entry-seal:hover::before,.entry-seal:hover::after{transform:none}.entry-gate.is-breaking .seal-fissure{animation:none;opacity:.8}.seal-shard{will-change:auto}}
 
-@media(max-height:480px){.entry-content{padding:12px 20px}.entry-eyebrow{font-size:8px;margin-bottom:6px}.entry-copy h2{font-size:26px}.entry-intro{margin-bottom:6px}.entry-seal{width:min(40dvh,170px)}.entry-caption{line-height:1.5}.entry-caption strong{font-size:9px}.entry-caption span{font-size:8px}}
+@media(max-height:480px){.entry-content{--entry-seal-offset:8px;padding:12px 20px}.entry-eyebrow{font-size:8px;margin-bottom:6px}.entry-copy h2{font-size:26px}.entry-intro{margin-bottom:6px}.entry-seal{width:min(40dvh,170px)}.entry-caption{line-height:1.5}.entry-caption strong{font-size:9px}.entry-caption span{font-size:8px}}
