@@ -75,3 +75,20 @@ test('ranking desconta cada carro que escapou e aceita término antecipado',()=>
  assert.equal(validRun({...run,escaped:110,misses:1,shots:1,elapsedMs:1000}),false);
  assert.equal(validRun({...run,score:10,hits:1,shots:2,misses:1,bonusSec:1,elapsedMs:62000}),true);
 });
+
+test('ranking aceita o boss e as bombas sem contá-los como carros',()=>{
+ const run={score:800,hits:80,shots:103,misses:0,escaped:0,bonusSec:465,bossHits:20,bombsBurned:3,bombsExploded:2,bossDefeated:true,elapsedMs:575000};
+ assert.equal(validRun(run),true);
+ assert.equal(validRun({...run,score:810,hits:81,shots:104,bonusSec:471,elapsedMs:581000}),true);
+ assert.equal(validRun({...run,bossHits:19,bossDefeated:false}),true);
+ assert.equal(validRun({...run,shots:100}),false);
+ assert.equal(validRun({...run,score:790,hits:79}),false);
+ assert.equal(validRun({...run,bossHits:21}),false);
+ assert.equal(validRun({...run,bossHits:19}),false);
+ assert.equal(validRun({...run,score:810,hits:81,bossHits:19,bossDefeated:false}),false);
+ assert.equal(validRun({...run,bombsExploded:2.5}),false);
+ assert.equal(validRun({...run,bombsExploded:-1}),false);
+ assert.equal(validRun({...run,bombsBurned:4000,shots:5000}),false);
+ const interrupted={...run,bossHits:10,shots:90,bombsBurned:0,bombsExploded:2,bossDefeated:false};
+ assert.equal(validRun(interrupted),true);
+});

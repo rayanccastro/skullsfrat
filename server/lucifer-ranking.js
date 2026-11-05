@@ -1,4 +1,4 @@
-import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP } from '../web/lucifer-rules.js';
+import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP, ANASTACIA } from '../web/lucifer-rules.js';
 import { redisWire } from './lucifer-redis-wire.js';
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 
@@ -16,16 +16,29 @@ export function nickname(name) {
 export function validRun(data){
  const {score,hits,shots,bonusSec,elapsedMs}=data;
  const misses=data.misses??0, escaped=data.escaped??0; // Aceita clientes anteriores.
- if(![score,hits,shots,misses,escaped,bonusSec,elapsedMs].every(x=>Number.isSafeInteger(x)&&x>=0))return false;
- if(score!==hits*SCORE_PER_CAR||hits>shots||shots>1800||misses>shots-hits)return false;
+ const bossHits=data.bossHits??0, bombsBurned=data.bombsBurned??0, bombsExploded=data.bombsExploded??0;
+ const bossDefeated=data.bossDefeated??false;
+ const bossVersion=['bossHits','bombsBurned','bombsExploded','bossDefeated'].some(key=>data[key]!==undefined);
+ if(![score,hits,shots,misses,escaped,bonusSec,elapsedMs,bossHits,bombsBurned,bombsExploded].every(x=>Number.isSafeInteger(x)&&x>=0))return false;
+ if(score!==hits*SCORE_PER_CAR||hits+bossHits+bombsBurned+misses>shots||shots>1800)return false;
+ if(typeof bossDefeated!=='boolean'||bossHits>ANASTACIA.health/ANASTACIA.damage)return false;
+ if(bossDefeated!==(bossHits===ANASTACIA.health/ANASTACIA.damage))return false;
+ if((bossHits||bombsBurned||bombsExploded||bossDefeated)&&score<ANASTACIA.triggerScore)return false;
+ if(bossVersion&&score>ANASTACIA.triggerScore&&!bossDefeated)return false;
+ const maxBombs=Math.floor(elapsedMs/1000/ANASTACIA.bombInterval+1)*ANASTACIA.bombBurst;
+ if(bombsBurned+bombsExploded>maxBombs)return false;
  if(bonusSec<hits||bonusSec>hits*MAX_BONUS)return false;
  if(elapsedMs<(misses?1000:20000)||elapsedMs>MAX_RUN_MS+12000)return false;
  // O intervalo mínimo entre novos carros limita o número de acertos e fugas possíveis.
  const maxCars=Math.max(0,Math.floor((elapsedMs-FIRST_SPAWN*1000)/(MIN_SPAWN_GAP*1000))+1);
  if(escaped>0&&hits+escaped>maxCars)return false;
- const remainingMs=(BASE_TIME+bonusSec-misses*MISS_PENALTY-escaped*ESCAPE_PENALTY)*1000-elapsedMs;
+ const remainingMs=(BASE_TIME+bonusSec-misses*MISS_PENALTY-escaped*ESCAPE_PENALTY-bombsExploded*ANASTACIA.bombPenalty)*1000-elapsedMs;
  // O último evento pode descontar uma Molotov ou a saída de vários carros no mesmo quadro.
- const lastPenalty=misses||data.escaped===undefined?MISS_PENALTY:Math.min(escaped,CAR_LIMIT)*ESCAPE_PENALTY;
+ const lastPenalty=Math.max(
+  misses||data.escaped===undefined?MISS_PENALTY:0,
+  Math.min(escaped,CAR_LIMIT)*ESCAPE_PENALTY,
+  bombsExploded?ANASTACIA.bombLimit*ANASTACIA.bombPenalty:0
+ );
  if(elapsedMs<MAX_RUN_MS-2500&&(remainingMs>4500||remainingMs<-(lastPenalty*1000+4500)))return false;
  return true;
 }

@@ -1,8 +1,9 @@
 /* SKULLS FRATERNITY · Lucifer — Caça às Fraternidades
    Jogo arcade fictício 32-bit. As molotovs são efeitos de fantasia, sem mecânicas reais. */
 
+import { createAnastacia, summonAnastacia, advanceAnastacia, hitAnastacia, BOSS_BOUNDS, BOSS_DIALOGUE } from './lucifer-boss.js';
 import { createLuciferSounds } from './lucifer-sound.js';
-import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP } from './lucifer-rules.js';
+import { BASE_TIME, MAX_RUN_SECONDS, MAX_BONUS, SCORE_PER_CAR, MISS_PENALTY, ESCAPE_PENALTY, CAR_LIMIT, FIRST_SPAWN, MIN_SPAWN_GAP, ANASTACIA } from './lucifer-rules.js';
 
 const CAR_NAMES = [
  'Sharks Hunter','Cupids','Fraternidade Azul','Sirens','Enxamistas',
@@ -33,13 +34,19 @@ function timeText(seconds){const s=Math.max(0,Math.ceil(seconds));return `${Stri
 export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!after||document.getElementById('lucifer-game'))return()=>{};
  if(!document.querySelector('link[data-lucifer-css]')){
-  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=lucifer-sounds-20261105';css.dataset.luciferCss='';document.head.append(css);
+  const css=document.createElement('link');css.rel='stylesheet';css.href='/lucifer-game.css?v=anastacia-boss-20261105';css.dataset.luciferCss='';document.head.append(css);
  }
  const section=document.createElement('section');section.id='lucifer-game';section.className='lucifer-section section-space';
  section.innerHTML=`<div class="shell">
   <div class="lucifer-head"><div><span class="section-kicker">SKULLS ARCADE · 32 BITS</span><h2>LUCIFER <em>— Caça às Fraternidades</em></h2><p>O bode dos Skulls tem dois minutos para acumular pontos. Escolha seu nome, mire nos carros e sobreviva ao relógio.</p></div><span class="lucifer-sigil" aria-hidden="true">⛧</span></div>
   <div class="lucifer-cabinet">
     <header class="lucifer-hud"><div><span>JOGADOR</span><strong data-l-player>SEM REGISTRO</strong></div><div><span>PONTOS</span><strong data-l-score>0000</strong></div><div><span>TEMPO</span><strong data-l-time>02:00</strong></div><div><span>COMBO</span><strong data-l-combo>×0</strong></div></header>
+    <div class="lucifer-boss-panel" data-l-boss-panel hidden>
+      <div class="lucifer-boss-heading"><strong>ANASTACIA</strong><span data-l-boss-health>500 / 500</span></div>
+      <div class="lucifer-boss-health" role="progressbar" aria-label="Vida de Anastacia" aria-valuemin="0" aria-valuemax="500" aria-valuenow="500" data-l-boss-healthbar><span data-l-boss-healthfill></span></div>
+      <blockquote class="lucifer-boss-dialogue" data-l-boss-dialogue role="status">${BOSS_DIALOGUE}</blockquote>
+      <p>Molotov na Anastacia · ${ANASTACIA.damage} de dano. Acerte as bombas para queimá-las. Cada bomba que explodir tira ${ANASTACIA.bombPenalty}s.</p>
+    </div>
     <div class="lucifer-stage"><canvas width="960" height="540" tabindex="0" role="application" aria-label="Lucifer — jogo arcade. Use as setas para mover a mira e a barra de espaço para lançar." data-l-canvas></canvas>
       <div class="lucifer-notice" data-l-notice aria-live="polite"></div>
       <div class="lucifer-overlay" data-l-overlay>
@@ -96,9 +103,13 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  if(!sounds.supported){soundToggle.disabled=true;soundToggle.textContent='SOM INDISPONÍVEL';soundToggle.setAttribute('aria-pressed','false');}
  const overlay=$(section,'[data-l-overlay]'),form=$(section,'[data-l-form]'),input=$(section,'#lucifer-player-name');
  const images={};
- for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-v2.webp',goat:'/assets/lucifer-pixel-32bit.webp'})){
+ for(const [key,url] of Object.entries({cars:'/assets/lucifer-carros-v2.webp',goat:'/assets/lucifer-pixel-32bit.webp',boss:'/assets/anastacia-boss.webp'})){
   const image=new Image();image.src=url;images[key]=image;
  }
+ const bossPanel=$(section,'[data-l-boss-panel]'),bossHealth=$(section,'[data-l-boss-health]'),
+  bossHealthbar=$(section,'[data-l-boss-healthbar]'),bossHealthfill=$(section,'[data-l-boss-healthfill]');
+ let boss=createAnastacia();
+ let bossHealthShown=-1;
  const keys={left:false,right:false,up:false,down:false};
  let phase='welcome',player='',runToken=null,ranked=false,score=0,hits=0,shots=0,misses=0,escaped=0,combo=0,extraTime=0;
  let remaining=BASE_TIME,aim={x:WIDTH/2,y:205},cars=[],shotsInFlight=[],particles=[],effects=[], last=0,raf=0,elapsed=0,spawnClock=0,shotCooldown=0;
@@ -118,7 +129,17 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  const groundLines=[158,248,339],scenePattern=(x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,w,h);};
  function canPlay(){return phase==='playing';}
  function showNotice(message,seconds=1.25,penalty=false){messageEnd=performance.now()+seconds*1000;const notice=$(section,'[data-l-notice]');notice.textContent=message;notice.classList.toggle('is-penalty',penalty);}
+ function updateBossHUD(){
+  const visible=canPlay()&&(boss.phase==='active'||boss.phase==='dying');
+  bossPanel.hidden=!visible;
+  if(bossHealthShown===boss.health)return;
+  bossHealthShown=boss.health;
+  bossHealth.textContent=`${boss.health} / ${ANASTACIA.health}`;
+  bossHealthbar.setAttribute('aria-valuenow',String(boss.health));
+  bossHealthfill.style.transform=`scaleX(${boss.health/ANASTACIA.health})`;
+ }
  function updateHUD(){
+  updateBossHUD();
   $(section,'[data-l-player]').textContent=player||'SEM REGISTRO';
   $(section,'[data-l-score]').textContent=String(score).padStart(4,'0');
   $(section,'[data-l-time]').textContent=timeText(remaining);
@@ -193,6 +214,70 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   }
   else{ctx.fillStyle='#434145';ctx.beginPath();ctx.arc(x,y,46,0,Math.PI*2);ctx.fill();}
  }
+ function drawAnastacia(t){
+  if(boss.phase!=='active'&&boss.phase!=='dying')return;
+  const image=images.boss,height=BOSS_BOUNDS.height;
+  const width=image.naturalWidth?height*image.naturalWidth/image.naturalHeight:height;
+  const x=WIDTH/2-width/2,y=BOSS_BOUNDS.y;
+  ctx.save();
+  ctx.fillStyle='#a71b3526';ctx.beginPath();ctx.ellipse(WIDTH/2,y+height-6,114,19,0,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=boss.hitFlash>0?.48:1;
+  if(image.complete&&image.naturalWidth){
+   if(boss.phase==='dying'){
+    const progress=Math.min(1,boss.deathTime/ANASTACIA.defeatDuration);
+    ctx.globalAlpha=1-progress;
+    for(let row=0;row<12;row++)for(let col=0;col<8;col++){
+     const dx=(col-3.5)*progress*23,dy=(row-5.5)*progress*16+progress*progress*72;
+     ctx.drawImage(image,col*image.naturalWidth/8,row*image.naturalHeight/12,image.naturalWidth/8,image.naturalHeight/12,
+      x+col*width/8+dx,y+row*height/12+dy,width/8+.5,height/12+.5);
+    }
+   }else ctx.drawImage(image,x,y,width,height);
+  }else{
+   ctx.fillStyle='#8e182b';ctx.fillRect(BOSS_BOUNDS.x,y,BOSS_BOUNDS.width,height);
+   ctx.fillStyle='#eee0ec';ctx.font='12px "Skulls Pixel",monospace';ctx.textAlign='center';ctx.fillText('ANASTACIA',WIDTH/2,y+height/2);
+  }
+  ctx.restore();
+  for(const bomb of boss.bombs)drawBossBomb(bomb,t);
+ }
+ function drawBossBomb(bomb,t){
+  const flight=Math.min(1,bomb.age/.55);
+  const x=WIDTH/2+(bomb.x-WIDTH/2)*flight;
+  const y=BOSS_BOUNDS.y+120+(bomb.y-BOSS_BOUNDS.y-120)*flight-Math.sin(Math.PI*flight)*72;
+  const seconds=Math.max(0,ANASTACIA.bombFuse-bomb.age),urgent=seconds<1.5;
+  ctx.save();
+  ctx.strokeStyle=urgent?'#ff6041':'#dbb260';ctx.lineWidth=2;
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.ellipse(bomb.x,bomb.y+15,32,10,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#18101d';ctx.fillRect(x-16,y-15,32,29);ctx.fillRect(x-12,y-20,24,39);
+  ctx.fillStyle=urgent&&Math.sin(t/65)>0?'#ef5945':'#7d3547';ctx.fillRect(x-11,y-13,22,23);
+  ctx.fillStyle='#f2b753';ctx.fillRect(x-6,y-25,12,8);
+  ctx.fillStyle='#ffe2a1';ctx.fillRect(x+4,y-33,5,7);
+  ctx.fillStyle='#ff6a27';ctx.fillRect(x+9,y-38,5,6);
+  ctx.fillStyle='#fff0ca';ctx.textAlign='center';ctx.font='10px "Skulls Pixel",monospace';
+  ctx.fillText(String(Math.ceil(seconds)),x,y+4);
+  ctx.restore();
+ }
+ function beginBoss(){
+  if(!summonAnastacia(boss,score))return;
+  cars=[];shotsInFlight=[];spawnClock=FIRST_SPAWN;
+  clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();
+  updateBossHUD();
+  bossPanel.scrollIntoView({behavior:'auto',block:'nearest'});
+  showNotice('ANASTACIA ENTROU NA CAÇA!',2.4);
+ }
+ function advanceBoss(dt){
+  const before=boss.phase,exploded=advanceAnastacia(boss,dt);
+  if(exploded.length){
+   for(const bomb of exploded)makeExplosion(bomb.x,bomb.y,true);
+   sounds.explode();
+   const penalty=exploded.length*ANASTACIA.bombPenalty;
+   remaining=Math.max(0,remaining-penalty);
+   showNotice(`BOMBA EXPLODIU!  −${penalty}s`,1.35,true);
+  }
+  if(before==='dying'&&boss.phase==='defeated'){
+   spawnClock=FIRST_SPAWN;
+   showNotice('ANASTACIA DERROTADA! OS CARROS VOLTARAM.',2.5);
+  }
+ }
  function drawAim(t){
   const pulse=1+Math.sin(t/165)*.08;
   ctx.save();ctx.translate(aim.x,aim.y);ctx.scale(pulse,pulse);
@@ -203,8 +288,8 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  function drawProjectiles(dt){
   for(let i=shotsInFlight.length-1;i>=0;i--){
-   const p=shotsInFlight[i];p.p+=dt/.48;
-   if(p.p>=1){if(remaining>0)impact(p);shotsInFlight.splice(i,1);continue;}
+   const p=shotsInFlight[i];if(!p)continue;p.p+=dt/.48;
+   if(p.p>=1){shotsInFlight.splice(i,1);if(remaining>0)impact(p);continue;}
    const a=p.p,x=p.x+(p.tx-p.x)*a,y=p.y+(p.ty-p.y)*a-Math.sin(Math.PI*a)*90;
    ctx.save();ctx.translate(x,y);ctx.rotate(a*6);
    ctx.fillStyle='#5a8e61';ctx.fillRect(-5,-11,10,19);ctx.fillStyle='#a63b22';ctx.fillRect(-3,-13,6,5);
@@ -221,6 +306,25 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   }
  }
  function impact(projectile){
+  if(boss.phase==='active'){
+   const hit=hitAnastacia(boss,{x:projectile.tx,y:projectile.ty});
+   if(hit==='bomb'){
+    makeExplosion(projectile.tx,projectile.ty,false);sounds.explode();showNotice('BOMBA QUEIMADA!',.9);
+   }else if(hit==='boss'||hit==='defeated'){
+    makeExplosion(projectile.tx,projectile.ty,false);
+    showNotice(`ANASTACIA  −${ANASTACIA.damage} PV`,.7);
+    if(hit==='defeated'){
+     shotsInFlight=[];
+     for(const [x,y] of [[420,150],[540,170],[480,235],[415,310],[545,310]])makeExplosion(x,y,true);
+     sounds.explode();
+    }
+   }else{
+    misses++;combo=0;remaining=Math.max(0,remaining-MISS_PENALTY);
+    makeExplosion(projectile.tx,projectile.ty,false);showNotice(`ERROU A MOLOTOV!  −${MISS_PENALTY}s`,1.35,true);
+   }
+   updateHUD();return;
+  }
+  if(boss.phase==='dying')return;
   const candidates=cars.filter(c=>Math.abs(c.x-projectile.tx)<88*c.scale&&Math.abs(c.y-projectile.ty)<34*c.scale);
   const target=candidates.sort((a,b)=>Math.abs(a.x-projectile.tx)-Math.abs(b.x-projectile.tx))[0];
   if(target){
@@ -228,6 +332,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
    hits++;combo++;score+=SCORE_PER_CAR;
    const bonus=Math.min(MAX_BONUS,combo);remaining+=bonus;extraTime+=bonus;
    makeExplosion(target.x,target.y,true);sounds.explode();if(target.index===CAR_NAMES.indexOf('Obscury'))showObscuryEgg(target.x,target.y);showNotice(`+10 PONTOS   +${bonus}s   COMBO ×${combo}`,.95);
+   beginBoss();
   }else{misses++;combo=0;remaining=Math.max(0,remaining-MISS_PENALTY);makeExplosion(projectile.tx,projectile.ty,false);showNotice(`ERROU A MOLOTOV!  −${MISS_PENALTY}s`,1.35,true);}
   updateHUD();
  }
@@ -243,7 +348,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  }
  function draw(t,dt){
   ctx.imageSmoothingEnabled=false;
-  drawPixelCity(t);cars.forEach(drawCar);drawLucifer();drawProjectiles(dt);renderParticles(dt);drawAim(t);
+  drawPixelCity(t);cars.forEach(drawCar);drawAnastacia(t);drawLucifer();drawProjectiles(dt);renderParticles(dt);drawAim(t);
   ctx.imageSmoothingEnabled=true;
  }
  function stop(){cancelAnimationFrame(raf);raf=0;last=0;}
@@ -257,21 +362,24 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   const amount=dt*280;
   aim.x=clamp(aim.x+((keys.right?1:0)-(keys.left?1:0))*amount,38,WIDTH-38);
   aim.y=clamp(aim.y+((keys.down?1:0)-(keys.up?1:0))*amount,170,397);
-  spawnClock-=dt;
-  if(spawnClock<=0){spawnClock=rand(MIN_SPAWN_GAP,1.25);spawnCar();}
-  cars.forEach(car=>car.x+=car.speed*car.dir*dt);
-  // Check the trailing edge in the direction of travel. Cars still entering stay in play.
-  const beforeExit=cars.length;
-  cars=cars.filter(car=>{
-   const halfWidth=CAR_WIDTH*car.scale/2;
-   return car.dir>0?car.x-halfWidth<WIDTH:car.x+halfWidth>0;
-  });
-  const exits=beforeExit-cars.length;
-  if(exits){
-   escaped+=exits;
-   const penalty=exits*ESCAPE_PENALTY;
-   remaining=Math.max(0,remaining-penalty);
-   showNotice(`${exits===1?'CARRO ESCAPOU':exits+' CARROS ESCAPARAM'}!  −${penalty}s`,1.35,true);
+  advanceBoss(dt);
+  if(boss.phase==='waiting'||boss.phase==='defeated'){
+   spawnClock-=dt;
+   if(spawnClock<=0){spawnClock=rand(MIN_SPAWN_GAP,1.25);spawnCar();}
+   cars.forEach(car=>car.x+=car.speed*car.dir*dt);
+   // Check the trailing edge in the direction of travel. Cars still entering stay in play.
+   const beforeExit=cars.length;
+   cars=cars.filter(car=>{
+    const halfWidth=CAR_WIDTH*car.scale/2;
+    return car.dir>0?car.x-halfWidth<WIDTH:car.x+halfWidth>0;
+   });
+   const exits=beforeExit-cars.length;
+   if(exits){
+    escaped+=exits;
+    const penalty=exits*ESCAPE_PENALTY;
+    remaining=Math.max(0,remaining-penalty);
+    showNotice(`${exits===1?'CARRO ESCAPOU':exits+' CARROS ESCAPARAM'}!  −${penalty}s`,1.35,true);
+   }
   }
   draw(t,dt);
   if(messageEnd<t)$(section,'[data-l-notice]').textContent='';
@@ -280,7 +388,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   raf=requestAnimationFrame(tick);
  }
  function throwBottle(){
-  if(!canPlay()||shotCooldown>0)return;
+  if(!canPlay()||shotCooldown>0||boss.phase==='dying')return;
   sounds.launch();
   shotCooldown=.4;shots++;shotsInFlight.push({x:WIDTH/2,y:435,tx:aim.x,ty:aim.y,p:0});
  }
@@ -312,6 +420,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
    ranked=!!(session.ok&&session.token);runToken=ranked?session.token:null;
   }catch{ranked=false;runToken=null;}
   btn.disabled=false;btn.textContent='COMEÇAR PARTIDA ↗';
+  boss=createAnastacia();bossHealthShown=-1;
   phase='playing';score=0;hits=0;shots=0;misses=0;escaped=0;combo=0;extraTime=0;remaining=BASE_TIME;elapsed=0;spawnClock=FIRST_SPAWN;shotCooldown=0;
   aim={x:WIDTH/2,y:230};cars=[];shotsInFlight=[];effects=[];particles=[];carBag=[];last=performance.now();
   overlay.hidden=true;updateHUD();canvas.focus({preventScroll:true});
@@ -325,11 +434,11 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   $(section,'[data-l-title]').textContent='FIM DE JOGO';
   $(section,'[data-l-message]').textContent='Lucifer concluiu sua caça. Volte ao mapa para superar o placar.';
   $(section,'[data-l-final]').textContent=String(score);
-  $(section,'[data-l-final-text]').textContent=`${hits} carros atingidos · ${escaped} escaparam · ${shots} lançamentos`;
+  $(section,'[data-l-final-text]').textContent=`${hits} carros atingidos · ${escaped} escaparam · ${shots} lançamentos${boss.defeated?' · Anastacia derrotada':''}`;
   if(ranked&&runToken){
    $(section,'[data-l-message]').textContent='Registrando seus pontos no ranking global…';
    try{
-    const result=await requestJSON(START_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'finish',token:runToken,name:player,score,hits,shots,misses,escaped,bonusSec:extraTime,elapsedMs:Math.round(elapsed*1000)})},6500);
+    const result=await requestJSON(START_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'finish',token:runToken,name:player,score,hits,shots,misses,escaped,bossHits:boss.hits,bombsBurned:boss.bombsBurned,bombsExploded:boss.bombsExploded,bossDefeated:boss.defeated,bonusSec:extraTime,elapsedMs:Math.round(elapsed*1000)})},6500);
     $(section,'[data-l-message]').textContent=result.ok?'Pontuação registrada no ranking global!':'Sua pontuação ficou salva neste navegador. Ranking global indisponível.';
    }catch{$(section,'[data-l-message]').textContent='Sua pontuação ficou salva neste navegador. Não foi possível enviar ao ranking global.';}
   }else $(section,'[data-l-message]').textContent='Pontuação salva neste navegador. O ranking global requer configuração do banco.';
@@ -368,7 +477,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
   if(event.code==='Space'){event.preventDefault();if(!event.repeat)throwBottle();}
  }
  function onKeyUp(event){const dir={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[event.key];if(dir)keys[dir]=false;}
- function reset(){sounds.stop();clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
+ function reset(){boss=createAnastacia();bossHealthShown=-1;sounds.stop();clearTimeout(easterTimer);stage.querySelector('.lucifer-obscury-bubble')?.remove();if(phase==='playing')stop();phase='welcome';ranked=false;runToken=null;player='';cars=[];shotsInFlight=[];particles=[];effects=[];score=0;remaining=BASE_TIME;combo=0;Object.keys(keys).forEach(k=>keys[k]=false);showIntro();draw(performance.now(),0);}
  function onClick(event){
   const b=event.target.closest('button');if(!b)return;
   if(b.matches('[data-l-again]')){reset();input.focus();}
@@ -390,6 +499,7 @@ export function mountLuciferGame(after=document.querySelector('#labirinto')){
  window.addEventListener('keydown',onKeyDown);window.addEventListener('keyup',onKeyUp);
  canvas.addEventListener('touchstart',onTouchStart,{passive:true});canvas.addEventListener('touchend',onTouchEnd,{passive:true});
  window.addEventListener('blur',()=>Object.keys(keys).forEach(k=>keys[k]=false));
+ images.boss.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  images.goat.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  images.cars.addEventListener('load',()=>{if(phase!=='playing')draw(performance.now(),0)});
  showIntro();draw(performance.now(),0);void loadRanking();
